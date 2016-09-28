@@ -1,52 +1,16 @@
-/*
- * Copyright (c) 2013, 2014 Oracle and/or its affiliates.
- * All rights reserved. Use is subject to license terms.
- *
- * This file is available and licensed under the following license:
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *  - Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *  - Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the distribution.
- *  - Neither the name of Oracle nor the names of its
- *    contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Sphere;
-import javafx.scene.transform.Rotate;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 /**
  *
- * @author cmcastil
+ * @author Demitri Maestas
  */
 public class Main extends Application {
 
@@ -64,7 +28,6 @@ public class Main extends Application {
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 250.0;
-    private static final double HYDROGEN_ANGLE = 104.5;
     private static final double CONTROL_MULTIPLIER = 0.1;
     private static final double SHIFT_MULTIPLIER = 10.0;
     private static final double MOUSE_SPEED = 0.1;
@@ -191,66 +154,21 @@ public class Main extends Application {
 
     private void buildMolecule() {
 
-        final PhongMaterial redMaterial = new PhongMaterial();
-        redMaterial.setDiffuseColor(Color.DARKRED);
-        redMaterial.setSpecularColor(Color.RED);
 
-        final PhongMaterial whiteMaterial = new PhongMaterial();
-        whiteMaterial.setDiffuseColor(Color.WHITE);
-        whiteMaterial.setSpecularColor(Color.LIGHTBLUE);
 
-        final PhongMaterial greyMaterial = new PhongMaterial();
-        greyMaterial.setDiffuseColor(Color.DARKGREY);
-        greyMaterial.setSpecularColor(Color.GREY);
+        Xform gridXform = new Xform();
 
-        Xform moleculeXform = new Xform();
-        Xform oxygenXform = new Xform();
-        Xform hydrogen1SideXform = new Xform();
-        Xform hydrogen1Xform = new Xform();
-        Xform hydrogen2SideXform = new Xform();
-        Xform hydrogen2Xform = new Xform();
 
-        Cell test = new Cell();
+        for(int i = 0;i<30;i++)
+        {
+            Cell test = new Cell();
+            test.setAlive();
+            test.setTranslateX(i);
+            gridXform.getChildren().add(test);
 
-        Sphere oxygenSphere = new Sphere(40.0);
-        oxygenSphere.setMaterial(redMaterial);
+        }
 
-        Sphere hydrogen1Sphere = new Sphere(30.0);
-        hydrogen1Sphere.setMaterial(whiteMaterial);
-        hydrogen1Sphere.setTranslateX(0.0);
-
-        Sphere hydrogen2Sphere = new Sphere(30.0);
-        hydrogen2Sphere.setMaterial(whiteMaterial);
-        hydrogen2Sphere.setTranslateZ(0.0);
-
-        Cylinder bond1Cylinder = new Cylinder(5, 100);
-        bond1Cylinder.setMaterial(greyMaterial);
-        bond1Cylinder.setTranslateX(50.0);
-        bond1Cylinder.setRotationAxis(Rotate.Z_AXIS);
-        bond1Cylinder.setRotate(90.0);
-
-        Cylinder bond2Cylinder = new Cylinder(5, 100);
-        bond2Cylinder.setMaterial(greyMaterial);
-        bond2Cylinder.setTranslateX(50.0);
-        bond2Cylinder.setRotationAxis(Rotate.Z_AXIS);
-        bond2Cylinder.setRotate(90.0);
-
-        moleculeXform.getChildren().add(oxygenXform);
-        moleculeXform.getChildren().add(hydrogen1SideXform);
-        moleculeXform.getChildren().add(hydrogen2SideXform);
-        oxygenXform.getChildren().add(oxygenSphere);
-        hydrogen1SideXform.getChildren().add(hydrogen1Xform);
-        hydrogen2SideXform.getChildren().add(hydrogen2Xform);
-        hydrogen1Xform.getChildren().add(hydrogen1Sphere);
-        hydrogen2Xform.getChildren().add(hydrogen2Sphere);
-        hydrogen1SideXform.getChildren().add(bond1Cylinder);
-        hydrogen2SideXform.getChildren().add(bond2Cylinder);
-
-        hydrogen1Xform.setTx(100.0);
-        hydrogen2Xform.setTx(100.0);
-        hydrogen2SideXform.setRotateY(HYDROGEN_ANGLE);
-
-        moleculeGroup.getChildren().add(moleculeXform);
+        moleculeGroup.getChildren().add(gridXform);
 
         world.getChildren().addAll(moleculeGroup);
     }
