@@ -16,7 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- *
+ * USER CONTROLD ZOOM IN IS WITH ARROW KEY
  * @author Demitri Maestas
  */
 public class Main extends Application {
@@ -35,27 +35,13 @@ public class Main extends Application {
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 250.0;
-    private static final double CONTROL_MULTIPLIER = 0.1;
-    private static final double SHIFT_MULTIPLIER = 10.0;
-    private static final double MOUSE_SPEED = 0.1;
-    private static final double ROTATION_SPEED = 2.0;
-    private static final double TRACK_SPEED = 0.3;
 
     Conway gameOfLife;
     Xform gridXform;
 
-    double mousePosX;
-    double mousePosY;
-    double mouseOldX;
-    double mouseOldY;
-    double mouseDeltaX;
-    double mouseDeltaY;
 
-    //   private void buildScene() {
-    //       root.getChildren().add(world);
-    //   }
+
     private void buildCamera() {
-        System.out.println("buildCamera()");
         root.getChildren().add(cameraXform);
         cameraXform.getChildren().add(cameraXform2);
         cameraXform2.getChildren().add(cameraXform3);
@@ -70,7 +56,6 @@ public class Main extends Application {
     }
 
     private void buildAxes() {
-        System.out.println("buildAxes()");
         final PhongMaterial redMaterial = new PhongMaterial();
         redMaterial.setDiffuseColor(Color.DARKRED);
         redMaterial.setSpecularColor(Color.RED);
@@ -96,47 +81,10 @@ public class Main extends Application {
         world.getChildren().addAll(axisGroup);
     }
 
-    private void handleMouse(Scene scene, final Node root) {
-        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override public void handle(MouseEvent me) {
-                mousePosX = me.getSceneX();
-                mousePosY = me.getSceneY();
-                mouseOldX = me.getSceneX();
-                mouseOldY = me.getSceneY();
-            }
-        });
-        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override public void handle(MouseEvent me) {
-                mouseOldX = mousePosX;
-                mouseOldY = mousePosY;
-                mousePosX = me.getSceneX();
-                mousePosY = me.getSceneY();
-                mouseDeltaX = (mousePosX - mouseOldX);
-                mouseDeltaY = (mousePosY - mouseOldY);
-
-                double modifier = 1.0;
-
-                if (me.isControlDown()) {
-                    modifier = CONTROL_MULTIPLIER;
-                }
-                if (me.isShiftDown()) {
-                    modifier = SHIFT_MULTIPLIER;
-                }
-                if (me.isPrimaryButtonDown()) {
-                    cameraXform.ry.setAngle(cameraXform.ry.getAngle() - mouseDeltaX*MOUSE_SPEED*modifier*ROTATION_SPEED);
-                    cameraXform.rx.setAngle(cameraXform.rx.getAngle() + mouseDeltaY*MOUSE_SPEED*modifier*ROTATION_SPEED);
-                }
-                else if (me.isSecondaryButtonDown()) {
-                    double z = camera.getTranslateZ();
-                    double newZ = z + mouseDeltaX*MOUSE_SPEED*modifier;
-                    camera.setTranslateZ(newZ);
-                }
-                else if (me.isMiddleButtonDown()) {
-                    cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX*MOUSE_SPEED*modifier*TRACK_SPEED);
-                    cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY*MOUSE_SPEED*modifier*TRACK_SPEED);
-                }
-            }
-        });
+    private void autoRotate(Scene scene, final Node root) {
+        double modifier = 1.0;
+        cameraXform.ry.setAngle(cameraXform.ry.getAngle() - 0.05);
+        cameraXform.rx.setAngle(cameraXform.rx.getAngle() - 0.05);
     }
 
     private void handleKeyboard(Scene scene, final Node root) {
@@ -205,7 +153,6 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1024, 768, true);
         scene.setFill(Color.BLACK);
         handleKeyboard(scene, world);
-        handleMouse(scene, world);
 
         primaryStage.setTitle("Conway's Game of Life - Demitri Maestas");
         primaryStage.setScene(scene);
@@ -218,6 +165,12 @@ public class Main extends Application {
                 ae -> updateGame()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+
+        Timeline rotate = new Timeline(new KeyFrame(
+                Duration.millis(10),
+                ae -> autoRotate(scene, world)));
+        rotate.setCycleCount(Animation.INDEFINITE);
+        rotate.play();
     }
 
     /**

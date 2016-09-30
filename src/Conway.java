@@ -53,13 +53,6 @@ public class Conway {
                 for(int k = 1;k<30;k++)
                 {
                     int neighbors = 0;
-                    if(grid[i][j][k]!= null)
-                    {
-                        newGrid[i][j][k] = new Cell();
-                        newGrid[i][j][k].setAlive();
-                    }
-
-
                     if(grid[i+1][j][k] != null)neighbors++;
                     if(grid[i-1][j][k] != null)neighbors++;
                     if(grid[i][j+1][k] != null)neighbors++;
@@ -70,9 +63,8 @@ public class Conway {
                     {
                         newGrid[i][j][k] = new Cell();
                         newGrid[i][j][k].setAlive();
-                        System.out.println("This is a bullshit test");
                     }
-                    if(neighbors<= 2 || neighbors >=6)
+                    else if(neighbors < 2 || neighbors >6)
                     {
                         newGrid[i][j][k] = null;
                     }
@@ -100,7 +92,7 @@ public class Conway {
                 for(int k = 1;k<30;k++)
                 {
                     //There is currently a 5% chance of a cube spawning at any given location
-                    if(chance.nextInt(10) == 0)
+                    if(chance.nextInt(100) == 0)
                     {
                         grid[i][j][k] = new Cell();
                         grid[i][j][k].setAlive();
