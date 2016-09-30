@@ -3,6 +3,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
@@ -12,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -180,8 +183,6 @@ public class Main extends Application {
         gameOfLife = new Conway(new int[]{3,5,3,5});
         gridXform = new Xform();
 
-
-
         root.getChildren().add(world);
         root.setDepthTest(DepthTest.ENABLE);
 
@@ -189,7 +190,11 @@ public class Main extends Application {
         buildCamera();
         buildAxes();
 
-        Scene scene = new Scene(root, 1024, 768, true);
+        BorderPane fullGUI = new BorderPane();
+        fullGUI.setCenter(root);
+        fullGUI.setTop(new HBox());
+        Scene scene = new Scene(fullGUI, 1024, 768, true);
+
         scene.setFill(Color.BLACK);
         handleKeyboard(scene, world);
 
