@@ -1,3 +1,6 @@
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
@@ -7,6 +10,10 @@ import javafx.scene.shape.Box;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -33,6 +40,9 @@ public class Main extends Application {
     private static final double MOUSE_SPEED = 0.1;
     private static final double ROTATION_SPEED = 2.0;
     private static final double TRACK_SPEED = 0.3;
+
+    Conway gameOfLife;
+    Xform gridXform;
 
     double mousePosX;
     double mousePosY;
@@ -152,48 +162,62 @@ public class Main extends Application {
         });
     }
 
-    private void buildMolecule() {
-        Xform gridXform = new Xform();
+    private void updateGame() {
+        Cell[][][] update = gameOfLife.getGrid();
+        world.getChildren().remove(gridXform);
+        gridXform = new Xform();
         for(int i = -15;i<15;i++)
         {
             for(int j = -15; j<15;j++)
             {
                 for(int k = -15;k<15;k++)
                 {
-                    Cell test = new Cell();
-                    test.setAlive();
-                    test.setTranslate(i,j,k);
-                    gridXform.getChildren().add(test);
+                    if(update[i+16][j+16][k+16]!= null )
+                    {
+                        Cell current = update[i+16][j+16][k+16];
+                        current.setTranslate(i,j,k);
+                        gridXform.getChildren().add(current);
+                    }
+
                 }
             }
         }
         world.getChildren().addAll(gridXform);
+        gameOfLife.step();
     }
+
 
     @Override
     public void start(Stage primaryStage) {
 
-        // setUserAgentStylesheet(STYLESHEET_MODENA);
-        System.out.println("start()");
+        gameOfLife = new Conway(new int[]{3,5,3,5});
+        gridXform = new Xform();
+
+
 
         root.getChildren().add(world);
         root.setDepthTest(DepthTest.ENABLE);
 
-        // buildScene();
+
         buildCamera();
         buildAxes();
-        buildMolecule();
 
         Scene scene = new Scene(root, 1024, 768, true);
         scene.setFill(Color.BLACK);
         handleKeyboard(scene, world);
         handleMouse(scene, world);
 
-        primaryStage.setTitle("Molecule Sample Application");
+        primaryStage.setTitle("Conway's Game of Life - Demitri Maestas");
         primaryStage.setScene(scene);
         primaryStage.show();
 
         scene.setCamera(camera);
+
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> updateGame()));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
     /**

@@ -14,12 +14,19 @@ public class Cell extends Xform {
     {
         this.getChildren().add(displayCell);
     }
+
     public void setAlive()
     {
-
         displayCell.setMaterial(cellColor);
         cellColor.setSpecularColor(Color.GREEN);
         cellColor.setDiffuseColor(Color.GREEN);
+    }
+
+    public void setDead()
+    {
+        displayCell.setMaterial(cellColor);
+        cellColor.setSpecularColor(Color.RED);
+        cellColor.setDiffuseColor(Color.RED);
     }
 
 
