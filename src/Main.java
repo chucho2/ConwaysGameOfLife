@@ -3,6 +3,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
@@ -12,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,8 +40,15 @@ public class Main extends Application {
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 250.0;
 
+    BorderPane fullGUI = new BorderPane();
     Conway gameOfLife;
     Xform gridXform;
+    Timeline zoomIn = new Timeline(new KeyFrame(
+            Duration.millis(10),
+            ae -> zoom(true)));
+    Timeline zoomOut = new Timeline(new KeyFrame(
+            Duration.millis(10),
+            ae -> zoom(false)));
 
 
 
@@ -82,16 +93,29 @@ public class Main extends Application {
     }
 
     private void autoRotate(Scene scene, final Node root) {
-        double modifier = 1.0;
         cameraXform.ry.setAngle(cameraXform.ry.getAngle() - 0.05);
         cameraXform.rx.setAngle(cameraXform.rx.getAngle() - 0.05);
     }
 
+
+    private void zoom(boolean in)
+    {
+        if(in)camera.setTranslateZ(camera.getTranslateZ()+0.5);
+        else camera.setTranslateZ(camera.getTranslateZ()-0.5);
+    }
     private void handleKeyboard(Scene scene, final Node root) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
+                    case UP:
+                        zoomIn.setCycleCount(Animation.INDEFINITE);
+                        zoomIn.play();
+                        break;
+                    case DOWN:
+                        zoomOut.setCycleCount(Animation.INDEFINITE);
+                        zoomOut.play();
+                        break;
                     case Z:
                         cameraXform2.t.setX(0.0);
                         cameraXform2.t.setY(0.0);
@@ -102,8 +126,25 @@ public class Main extends Application {
                     case X:
                         axisGroup.setVisible(!axisGroup.isVisible());
                         break;
-                    case V:
-                        moleculeGroup.setVisible(!moleculeGroup.isVisible());
+                }
+            }
+        });
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case UP:
+                        zoomIn.stop();
+                        break;
+                    case DOWN:
+                        zoomOut.stop();
+                        break;
+                    case Z:
+                        cameraXform2.t.setX(0.0);
+                        cameraXform2.t.setY(0.0);
+                        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+                        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
+                        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
                         break;
                 }
             }
@@ -135,15 +176,21 @@ public class Main extends Application {
     }
 
 
+    public void createGUI()
+    {
+
+    }
+
     @Override
     public void start(Stage primaryStage) {
 
         gameOfLife = new Conway(new int[]{3,5,3,5});
         gridXform = new Xform();
+        createGUI();
 
 
-
-        root.getChildren().add(world);
+        fullGUI.setCenter(world);
+        root.getChildren().add(fullGUI);
         root.setDepthTest(DepthTest.ENABLE);
 
 
