@@ -3,9 +3,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
@@ -15,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,7 +36,6 @@ public class Main extends Application {
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 250.0;
 
-    BorderPane fullGUI = new BorderPane();
     Conway gameOfLife;
     Xform gridXform;
     Timeline zoomIn = new Timeline(new KeyFrame(
@@ -146,6 +141,9 @@ public class Main extends Application {
                         cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
                         cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
                         break;
+                    case X:
+                        axisGroup.setVisible(!axisGroup.isVisible());
+                        break;
                 }
             }
         });
@@ -176,21 +174,15 @@ public class Main extends Application {
     }
 
 
-    public void createGUI()
-    {
-
-    }
-
     @Override
     public void start(Stage primaryStage) {
 
         gameOfLife = new Conway(new int[]{3,5,3,5});
         gridXform = new Xform();
-        createGUI();
 
 
-        fullGUI.setCenter(world);
-        root.getChildren().add(fullGUI);
+
+        root.getChildren().add(world);
         root.setDepthTest(DepthTest.ENABLE);
 
 
