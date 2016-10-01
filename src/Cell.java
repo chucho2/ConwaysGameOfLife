@@ -1,6 +1,10 @@
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.util.Duration;
 
 /**
  * Created by CEP Computer Tech on 9/28/2016.
@@ -17,6 +21,11 @@ public class Cell extends Xform {
 
     public void setAlive()
     {
+
+    }
+
+    public void stayAlive()
+    {
         displayCell.setMaterial(cellColor);
         cellColor.setSpecularColor(Color.GREEN);
         cellColor.setDiffuseColor(Color.GREEN);
@@ -24,11 +33,7 @@ public class Cell extends Xform {
 
     public void setDead()
     {
-        displayCell.setMaterial(cellColor);
-        cellColor.setSpecularColor(Color.RED);
-        cellColor.setDiffuseColor(Color.RED);
+
     }
-
-
 }
 

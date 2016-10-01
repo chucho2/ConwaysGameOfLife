@@ -3,20 +3,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
-import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * USER CONTROLD ZOOM IN IS WITH ARROW KEY
@@ -26,7 +20,6 @@ public class Main extends Application {
 
     final Group root = new Group();
     final Xform axisGroup = new Xform();
-    final Xform moleculeGroup = new Xform();
     final Xform world = new Xform();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
     final Xform cameraXform = new Xform();
@@ -183,6 +176,7 @@ public class Main extends Application {
         gameOfLife = new Conway(new int[]{3,5,3,5});
         gridXform = new Xform();
 
+
         root.getChildren().add(world);
         root.setDepthTest(DepthTest.ENABLE);
 
@@ -190,10 +184,8 @@ public class Main extends Application {
         buildCamera();
         buildAxes();
 
-        BorderPane fullGUI = new BorderPane();
-        fullGUI.setCenter(root);
-        fullGUI.setTop(new HBox());
-        Scene scene = new Scene(fullGUI, 1024, 768, true);
+
+        Scene scene = new Scene(root, 1024, 768, true);
 
         scene.setFill(Color.BLACK);
         handleKeyboard(scene, world);
@@ -216,17 +208,4 @@ public class Main extends Application {
         rotate.setCycleCount(Animation.INDEFINITE);
         rotate.play();
     }
-
-    /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }

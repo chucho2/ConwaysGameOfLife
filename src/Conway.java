@@ -11,6 +11,7 @@ public class Conway {
     /*Holds the chance of a grid point having a live cell at spawn*/
     private Random chance;
 
+    /*The values from the R sliders as the game progresses*/
     int[] r;
 
     /*How do I document this? haha...*/
@@ -45,29 +46,29 @@ public class Conway {
      */
     public void step()
     {
+        /*This is the grid that we will pass the pointer to to show on the screen*/
         Cell[][][] newGrid = new Cell[32][32][32];
+
+
         for(int i = 1;i<30;i++)
         {
             for(int j=1;j<30;j++)
             {
-                for(int k = 1;k<30;k++)
+                for(int k = 1;k<30;k++)//These 3 loops just hit every cell in the new grid for checks
                 {
-                    int neighbors = 0;
-                    if(grid[i+1][j][k] != null)neighbors++;
-                    if(grid[i-1][j][k] != null)neighbors++;
-                    if(grid[i][j+1][k] != null)neighbors++;
-                    if(grid[i][j-1][k] != null)neighbors++;
-                    if(grid[i][j][k+1] != null)neighbors++;
-                    if(grid[i][j][k-1] != null)neighbors++;
-                    if(neighbors>= 2 && neighbors<= 6)
+                    int neighbors=0;
+                    /* This will check all 9 squares on the level below, then the level current, then the level on top.*/
+                    for(int l = -1; l<2;l++)//Moving Y levels
                     {
-                        newGrid[i][j][k] = new Cell();
-                        newGrid[i][j][k].setAlive();
+                        for(int m=-1;m<2;m++)
+                        {
+                            for(int n=-1;n<2;n++)
+                            {
+                                if(grid[i+l][j+m][k+n] != null)neighbors++;
+                            }
+                        }
                     }
-                    else if(neighbors < 2 || neighbors >6)
-                    {
-                        newGrid[i][j][k] = null;
-                    }
+                    if(neighbors >= 3 && neighbors<=5)newGrid[i][j][k] = new Cell();
                 }
             }
         }
