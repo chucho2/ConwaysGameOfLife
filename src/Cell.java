@@ -21,14 +21,20 @@ public class Cell extends Xform {
     }
 
 
-    public void grow()
+    private void growStep()
     {
-        if((int)displayCell.getDepth()< 1)
-        {
-            displayCell.setDepth(displayCell.getDepth()+0.005);
-            displayCell.setHeight(displayCell.getHeight()+0.005);
-            displayCell.setWidth(displayCell.getWidth()+0.005);
-        }
+        displayCell.setDepth(displayCell.getDepth()+0.3);
+        displayCell.setWidth(displayCell.getWidth()+0.3);
+        displayCell.setHeight(displayCell.getHeight()+0.3);
+    }
+
+    public void setAlive()
+    {
+        Timeline growing = new Timeline(new KeyFrame(
+                Duration.millis(200),
+                ae -> growStep()));
+        growing.setCycleCount(3);
+        growing.play();
 
     }
 
