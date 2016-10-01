@@ -1,8 +1,8 @@
 import java.util.Random;
 
 /**
- * is in charge of the logical rules of Conways game of life. The Class can create the game, and
- * update the game within itself.
+ * is in charge of the logical rules of Conway's game of life. The Class can create the game, and
+ * update the game within itself. It also holds the preset game values.
  */
 public class Conway {
 
@@ -34,11 +34,22 @@ public class Conway {
 
     /**
      * is to be used if a preset grid is already available or wanted to be created.
-     * @param preset a grid with values located at the (x,y,z) co-ords to make cool preset grids.
+     * @param presetIndex the index number of the preset grid requested.
      */
-    public Conway(Cell[][][] preset)
+    public Conway(int presetIndex)
     {
-        grid = preset;
+        grid = new Cell[32][32][32];
+        if(presetIndex == 0)
+        {
+            grid[15][15][15] = new Cell();
+            grid[15][15][14] = new Cell();
+            grid[15][15][16] = new Cell();
+            r[0] = 3;
+            r[1] = 3;
+            r[2] = 4;
+            r[3] = 2;
+        }
+
     }
 
     /**
@@ -72,8 +83,9 @@ public class Conway {
                     if(grid[i][j][k] == null &&neighbors >= r[0] && neighbors<=r[1])
                     {
                         newGrid[i][j][k] = new Cell();
+                        newGrid[i][j][k].setAlive();
                     }
-                    else if(grid[i][j][k] != null && (neighbors>r[2] || neighbors <r[3]))newGrid[i][j][k] = null;
+                    else if(grid[i][j][k] != null && (neighbors>r[2] || neighbors <r[3])) newGrid[i][j][k] = null;
                 }
             }
         }
@@ -81,7 +93,7 @@ public class Conway {
     }
 
     /**
-     * @return the grid in its current state.
+     * @return the grid in its current state of the game.
      */
     public Cell[][][] getGrid()
     {

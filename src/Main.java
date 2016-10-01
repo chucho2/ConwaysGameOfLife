@@ -3,6 +3,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
@@ -185,6 +188,7 @@ public class Main extends Application {
         buildAxes();
 
 
+
         Scene scene = new Scene(root, 1024, 768, true);
 
         scene.setFill(Color.BLACK);
@@ -192,6 +196,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Conway's Game of Life - Demitri Maestas");
         primaryStage.setScene(scene);
+
         primaryStage.show();
 
         scene.setCamera(camera);

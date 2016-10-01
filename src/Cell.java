@@ -24,12 +24,6 @@ public class Cell extends Xform {
 
     }
 
-    public void stayAlive()
-    {
-        displayCell.setMaterial(cellColor);
-        cellColor.setSpecularColor(Color.GREEN);
-        cellColor.setDiffuseColor(Color.GREEN);
-    }
 
     public void setDead()
     {
