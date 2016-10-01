@@ -56,6 +56,7 @@ public class Conway {
             {
                 for(int k = 1;k<30;k++)//These 3 loops just hit every cell in the new grid for checks
                 {
+                    if(grid[i][j][k]!=null) newGrid[i][j][k] = grid[i][j][k];
                     int neighbors=0;
                     /* This will check all 9 squares on the level below, then the level current, then the level on top.*/
                     for(int l = -1; l<2;l++)//Moving Y levels
@@ -68,7 +69,11 @@ public class Conway {
                             }
                         }
                     }
-                    if(neighbors >= 3 && neighbors<=5)newGrid[i][j][k] = new Cell();
+                    if(grid[i][j][k] == null &&neighbors >= r[0] && neighbors<=r[1])
+                    {
+                        newGrid[i][j][k] = new Cell();
+                    }
+                    else if(grid[i][j][k] != null && (neighbors>r[2] || neighbors <r[3]))newGrid[i][j][k] = null;
                 }
             }
         }
