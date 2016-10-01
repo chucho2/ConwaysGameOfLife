@@ -2,8 +2,15 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -217,27 +224,23 @@ public class GUI extends Application {
         gameOfLife.step();
     }
 
-
-    @Override
-    public void start(Stage primaryStage) {
-
-        gameOfLife = new Conway(new int[]{3,6,3,6});
+    /*This actually takes care of building the simulation for us,
+    * will be called by the splash screen at some point with custom
+    * parameters.
+    * */
+    private Scene startGame(int preset, int[] r)
+    {
+        gameOfLife = new Conway(r);
         gridXform = new Xform();
 
-
-        /*Written for me by Sample Molecule*/
         root.getChildren().add(world);
         root.setDepthTest(DepthTest.ENABLE);
         buildCamera();
         buildAxes();
         Scene scene = new Scene(root, 1024, 768, true);
         scene.setFill(Color.BLACK);
-        handleKeyboard(scene);
-        primaryStage.setTitle("Conway's Game of Life - Demitri Maestas");//Except for this.
-        primaryStage.setScene(scene);
-        primaryStage.show();
         scene.setCamera(camera);
-        /*End Pre-Written*/
+        handleKeyboard(scene);
 
         /*Getting the actual game loop going*/
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -246,5 +249,79 @@ public class GUI extends Application {
         /*Setting the GUI to rotate*/
         rotate.setCycleCount(Animation.INDEFINITE);
         rotate.play();
+        return scene;
+    }
+
+    /*Kind of a hard coded hack, creates the R values box on the splash screen*/
+    private Group createRValues(Stage primaryStage)
+    {
+        Group customR = new Group();
+        TextArea r1 = new TextArea("R1");
+        r1.setMaxSize(5,2);
+        customR.getChildren().add(r1);
+        TextArea r2 =new TextArea("R2");
+        r2.setMaxSize(5,5);
+        r2.setTranslateX(50);
+        customR.getChildren().add(r2);
+        TextArea r3 = new TextArea("R3");
+        r3.setMaxSize(5,5);
+        r3.setTranslateX(100);
+        customR.getChildren().add(r3);
+        TextArea r4 = new TextArea("R4");
+        r4.setMaxSize(5,5);
+        r4.setTranslateX(150);
+        customR.getChildren().add(r4);
+        Button fire = new Button("Run Custom Simulation");
+        fire.setTranslateX(200);
+        fire.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int[] r = new int[4];
+                r[0] = Integer.parseInt(r1.getText());
+                r[1] = Integer.parseInt(r2.getText());
+                r[2] = Integer.parseInt(r3.getText());
+                r[3] = Integer.parseInt(r4.getText());
+                primaryStage.setScene(startGame(-1,r));
+            }
+        });
+        customR.getChildren().add(fire);
+        customR.setTranslateX(400);
+        customR.setTranslateY(200);
+        return customR;
+    }
+
+
+    /**
+     * fires up the splash screen and bulids the components to it.
+     * will be passed to private methods to determine the layout
+     * of the actual simulation.
+     * @param primaryStage the JavaFX primary stage.
+     */
+    @Override
+    public void start(Stage primaryStage) {
+
+        Text topWelcome = new Text(120,70,"Conway's Game of Life - 3D Simulation");
+        topWelcome.setFont(new Font(40));
+        topWelcome.setFill(Color.WHITE);
+
+        Group root = new Group();
+        root.getChildren().add(topWelcome);
+        root.getChildren().add(createRValues(primaryStage));
+        Button startRandom = new Button("Run a Random Simulation");
+        startRandom.setTranslateX(400);
+        startRandom.setTranslateY(500);
+        root.getChildren().add(startRandom);
+        startRandom.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                primaryStage.setScene(startGame(-1,new int[]{3,6,3,6}));
+            }
+        });
+        Scene scene = new Scene(root, 1024, 768, true);
+        scene.setFill(Color.BLACK);
+        primaryStage.setTitle("Conway's Game of Life - Demitri Maestas");//Except for this.
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
     }
 }

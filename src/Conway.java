@@ -13,7 +13,6 @@ public class Conway {
 
     private ArrayList<Cell> liveCells;
 
-    private ArrayList<Cell> deadCells;
     /*Holds the chance of a grid point having a live cell at spawn*/
     private Random chance;
 
@@ -24,7 +23,6 @@ public class Conway {
     {
         chance = new Random();
         liveCells = new ArrayList<Cell>();
-        deadCells = new ArrayList<Cell>();
     }
 
     /**
@@ -102,6 +100,7 @@ public class Conway {
 
                         newGrid[i][j][k] = null;
 
+
                     }
                 }
             }
@@ -122,10 +121,6 @@ public class Conway {
         return liveCells;
     }
 
-    public ArrayList<Cell> deadCells()
-    {
-        return deadCells();
-    }
 
     /*Sets up a non-preset grid for us.*/
     private void createGrid()
