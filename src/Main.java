@@ -86,13 +86,15 @@ public class Main extends Application {
         world.getChildren().addAll(axisGroup);
     }
 
+
     private void autoAnimate() {
-        for(Cell c: gameOfLife.liveCells())
-        {
-            c.grow();
-        }
+
         cameraXform.ry.setAngle(cameraXform.ry.getAngle() - 0.05);
         cameraXform.rx.setAngle(cameraXform.rx.getAngle() - 0.05);
+       // for(Cell c: gameOfLife.liveCells())
+        //{
+          //  c.grow();
+        //}
     }
 
 
@@ -173,6 +175,11 @@ public class Main extends Application {
             }
         }
         world.getChildren().addAll(gridXform);
+        for(Cell c:gameOfLife.liveCells())
+        {
+            c.setAlive();
+        }
+
         gameOfLife.step();
     }
 
