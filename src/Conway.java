@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -8,6 +10,8 @@ public class Conway {
 
     /*The grid which holds the game*/
     private Cell[][][] grid;
+
+    private ArrayList<Cell> liveCells;
     /*Holds the chance of a grid point having a live cell at spawn*/
     private Random chance;
 
@@ -17,6 +21,7 @@ public class Conway {
     /*How do I document this? haha...*/
     {
         chance = new Random();
+        liveCells = new ArrayList<Cell>();
     }
 
     /**
@@ -59,6 +64,7 @@ public class Conway {
     {
         /*This is the grid that we will pass the pointer to to show on the screen*/
         Cell[][][] newGrid = new Cell[32][32][32];
+        liveCells = new ArrayList<>();
 
 
         for(int i = 1;i<30;i++)
@@ -67,7 +73,11 @@ public class Conway {
             {
                 for(int k = 1;k<30;k++)//These 3 loops just hit every cell in the new grid for checks
                 {
-                    if(grid[i][j][k]!=null) newGrid[i][j][k] = grid[i][j][k];
+                    if(grid[i][j][k]!=null)
+                    {
+                        newGrid[i][j][k] = grid[i][j][k];
+                        liveCells.add(newGrid[i][j][k]);
+                    }
                     int neighbors=0;
                     /* This will check all 9 squares on the level below, then the level current, then the level on top.*/
                     for(int l = -1; l<2;l++)//Moving Y levels
@@ -83,9 +93,12 @@ public class Conway {
                     if(grid[i][j][k] == null &&neighbors >= r[0] && neighbors<=r[1])
                     {
                         newGrid[i][j][k] = new Cell();
-                        newGrid[i][j][k].setAlive();
+                        liveCells.add(newGrid[i][j][k]);
                     }
-                    else if(grid[i][j][k] != null && (neighbors>r[2] || neighbors <r[3])) newGrid[i][j][k] = null;
+                    else if(grid[i][j][k] != null && (neighbors>r[2] || neighbors <r[3]))
+                    {
+                        newGrid[i][j][k] = null;
+                    }
                 }
             }
         }
@@ -98,6 +111,11 @@ public class Conway {
     public Cell[][][] getGrid()
     {
         return grid;
+    }
+
+    public ArrayList<Cell> liveCells()
+    {
+        return liveCells;
     }
 
     /*Sets up a non-preset grid for us.*/
@@ -113,7 +131,7 @@ public class Conway {
                     if(chance.nextInt(100) == 0)
                     {
                         grid[i][j][k] = new Cell();
-                        grid[i][j][k].setAlive();
+                        liveCells.add(grid[i][j][k]);
                     }
                 }
             }

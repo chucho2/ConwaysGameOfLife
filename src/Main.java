@@ -86,7 +86,11 @@ public class Main extends Application {
         world.getChildren().addAll(axisGroup);
     }
 
-    private void autoRotate(Scene scene, final Node root) {
+    private void autoAnimate() {
+        for(Cell c: gameOfLife.liveCells())
+        {
+            c.grow();
+        }
         cameraXform.ry.setAngle(cameraXform.ry.getAngle() - 0.05);
         cameraXform.rx.setAngle(cameraXform.rx.getAngle() - 0.05);
     }
@@ -209,7 +213,7 @@ public class Main extends Application {
 
         Timeline rotate = new Timeline(new KeyFrame(
                 Duration.millis(10),
-                ae -> autoRotate(scene, world)));
+                ae -> autoAnimate()));
         rotate.setCycleCount(Animation.INDEFINITE);
         rotate.play();
     }
