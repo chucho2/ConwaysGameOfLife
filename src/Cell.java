@@ -28,8 +28,16 @@ public class Cell extends Xform {
         displayCell.setHeight(displayCell.getHeight()+0.3);
     }
 
+    private void shrinkStep()
+    {
+        displayCell.setDepth(displayCell.getDepth()-0.3);
+        displayCell.setWidth(displayCell.getWidth()-0.3);
+        displayCell.setHeight(displayCell.getHeight()-0.3);
+    }
+
     public void setAlive()
     {
+        cellColor.setDiffuseColor(Color.GREEN);
         Timeline growing = new Timeline(new KeyFrame(
                 Duration.millis(200),
                 ae -> growStep()));
@@ -41,6 +49,12 @@ public class Cell extends Xform {
 
     public void setDead()
     {
+        cellColor.setDiffuseColor(Color.RED);
+        Timeline shrinking = new Timeline(new KeyFrame(
+                Duration.millis(200),
+                ae -> shrinkStep()));
+        shrinking.setCycleCount(3);
+        shrinking.play();
 
     }
 }

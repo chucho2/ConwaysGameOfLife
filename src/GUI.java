@@ -221,7 +221,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        gameOfLife = new Conway(new int[]{3,5,3,5});
+        gameOfLife = new Conway(new int[]{3,6,3,6});
         gridXform = new Xform();
 
 
