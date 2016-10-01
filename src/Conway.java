@@ -1,10 +1,10 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * is in charge of the logical rules of Conway's game of life. The Class can create the game, and
  * update the game within itself. It also holds the preset game values.
+ * @author Demitri Maestas
  */
 public class Conway {
 
@@ -76,7 +76,6 @@ public class Conway {
                     if(grid[i][j][k]!=null)
                     {
                         newGrid[i][j][k] = grid[i][j][k];
-                        liveCells.add(newGrid[i][j][k]);
                     }
                     int neighbors=0;
                     /* This will check all 9 squares on the level below, then the level current, then the level on top.*/
@@ -127,7 +126,7 @@ public class Conway {
             {
                 for(int k = 1;k<30;k++)
                 {
-                    //There is currently a 5% chance of a cube spawning at any given location
+                    //There is currently a 1% chance of a cube spawning at any given location
                     if(chance.nextInt(100) == 0)
                     {
                         grid[i][j][k] = new Cell();

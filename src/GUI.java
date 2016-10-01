@@ -3,9 +3,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.paint.PhongMaterial;
@@ -16,11 +13,15 @@ import javafx.util.Duration;
 
 
 /**
- * USER CONTROLD ZOOM IN IS WITH ARROW KEY
+ * is in charge of handling the Conway Object, as well as running all the timers
+ * that are firing in order to create the Animations. GUI is modeled extensively
+ * after the Molecule object from the JavaFX Tutorials.
+ * GUI has start() in it.
  * @author Demitri Maestas
  */
-public class Main extends Application {
+public class GUI extends Application {
 
+    /*Found in the JavaFX tutorials*/
     final Group root = new Group();
     final Xform axisGroup = new Xform();
     final Xform world = new Xform();
@@ -34,9 +35,13 @@ public class Main extends Application {
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 250.0;
+    private Xform gridXform;
 
-    Conway gameOfLife;
-    Xform gridXform;
+    /*This is the object that holdes all of the Game Logic*/
+    private Conway gameOfLife;
+
+
+   /*These timeles are used in tandem with the Arrow keys to control zooming*/
     Timeline zoomIn = new Timeline(new KeyFrame(
             Duration.millis(10),
             ae -> zoom(true)));
@@ -44,8 +49,18 @@ public class Main extends Application {
             Duration.millis(10),
             ae -> zoom(false)));
 
+    /*this is in charge of firing the main game every "Wall second"*/
+    private Timeline timeline = new Timeline(new KeyFrame(
+            Duration.millis(1000),
+            ae -> updateGame()));
+
+    /*This will fire to rotate the camera Angle using AutoAnimate*/
+    private Timeline rotate = new Timeline(new KeyFrame(
+            Duration.millis(10),
+            ae -> autoAnimate()));
 
 
+    /*These methods are all documented in the Java Moluclue Sample*/
     private void buildCamera() {
         root.getChildren().add(cameraXform);
         cameraXform.getChildren().add(cameraXform2);
@@ -85,25 +100,37 @@ public class Main extends Application {
         axisGroup.setVisible(false);
         world.getChildren().addAll(axisGroup);
     }
+    /*End pre-written methods*/
 
 
+    /**
+     * Auto Animate is in charge of rotating the Camera.
+     * When the "rotate" timer fires, it add's some
+     * amount to every angle degree.
+     */
     private void autoAnimate() {
 
         cameraXform.ry.setAngle(cameraXform.ry.getAngle() - 0.05);
         cameraXform.rx.setAngle(cameraXform.rx.getAngle() - 0.05);
-       // for(Cell c: gameOfLife.liveCells())
-        //{
-          //  c.grow();
-        //}
     }
 
 
+    /**
+     * will adjust the Z axis angle to let someone zoom in.
+     * @param in is true if we are zooming in.
+     */
     private void zoom(boolean in)
     {
         if(in)camera.setTranslateZ(camera.getTranslateZ()+0.5);
         else camera.setTranslateZ(camera.getTranslateZ()-0.5);
     }
-    private void handleKeyboard(Scene scene, final Node root) {
+
+    /**
+     * will check cases, to see if up or down was pressed,
+     * and will then call zoom to adjust the Z axis accordingly.
+     * @param scene of which everything is located.
+     */
+    private void handleKeyboard(Scene scene) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -154,6 +181,13 @@ public class Main extends Application {
         });
     }
 
+    /**
+     * this is called by a timer every second to continue the itteration of the game.
+     * it will write the previous version of the game onto the screen (while the new one is loading)
+     * it loops over every space in the grid, translates it so we can see a center rotation, and writes
+     * the new boxes onto the screen. When that's done, it animates all the boxes, and sets the next
+     * itteration to begin loading.
+     */
     private void updateGame() {
         Cell[][][] update = gameOfLife.getGrid();
         world.getChildren().remove(gridXform);
@@ -191,36 +225,25 @@ public class Main extends Application {
         gridXform = new Xform();
 
 
+        /*Written for me by Sample Molecule*/
         root.getChildren().add(world);
         root.setDepthTest(DepthTest.ENABLE);
-
-
         buildCamera();
         buildAxes();
-
-
-
         Scene scene = new Scene(root, 1024, 768, true);
-
         scene.setFill(Color.BLACK);
-        handleKeyboard(scene, world);
-
-        primaryStage.setTitle("Conway's Game of Life - Demitri Maestas");
+        handleKeyboard(scene);
+        primaryStage.setTitle("Conway's Game of Life - Demitri Maestas");//Except for this.
         primaryStage.setScene(scene);
-
         primaryStage.show();
-
         scene.setCamera(camera);
+        /*End Pre-Written*/
 
-        Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(1000),
-                ae -> updateGame()));
+        /*Getting the actual game loop going*/
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        Timeline rotate = new Timeline(new KeyFrame(
-                Duration.millis(10),
-                ae -> autoAnimate()));
+        /*Setting the GUI to rotate*/
         rotate.setCycleCount(Animation.INDEFINITE);
         rotate.play();
     }
