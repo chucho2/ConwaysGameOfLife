@@ -12,15 +12,23 @@ import javafx.util.Duration;
 public class Cell extends Xform {
 
     final PhongMaterial cellColor = new PhongMaterial();
-    final Box displayCell = new Box(1,1,1);
+    Box displayCell= new Box(0.1,0.1,0.1);
 
     public Cell()
     {
         this.getChildren().add(displayCell);
+        displayCell.setMaterial(cellColor);
     }
 
-    public void setAlive()
+
+    public void grow()
     {
+        if((int)displayCell.getDepth()< 1)
+        {
+            displayCell.setDepth(displayCell.getDepth()+0.005);
+            displayCell.setHeight(displayCell.getHeight()+0.005);
+            displayCell.setWidth(displayCell.getWidth()+0.005);
+        }
 
     }
 
