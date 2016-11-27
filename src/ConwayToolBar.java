@@ -2,19 +2,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.awt.*;
-import java.util.Optional;
 
 /**
  * Created by chucho2 on 11/26/16.
@@ -22,7 +16,7 @@ import java.util.Optional;
 public class ConwayToolBar {
 
     private Main gameControler;
-    private GUIComponents topGUI;
+    private ConwayGUIBuilder topGUI;
     private ConwayAlerts alerts;
 
 
@@ -30,12 +24,12 @@ public class ConwayToolBar {
     private Timeline messageTimer = new Timeline(new KeyFrame(
             Duration.millis(3000),
             ae -> messageToUser.setText("")));
-    public ConwayToolBar(Main main, GUIComponents topGUI)
+    public ConwayToolBar(Main main, ConwayGUIBuilder topGUI)
     {
         this.gameControler = main;
         this.topGUI = topGUI;
         messageToUser = new Label("");
-        alerts = new ConwayAlerts(gameControler);
+        alerts = new ConwayAlerts(gameControler,topGUI);
     }
 
 

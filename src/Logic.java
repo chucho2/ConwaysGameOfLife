@@ -4,7 +4,7 @@ import java.util.Random;
 /**
  * @author Demitri Maestas
  */
-public class ConwayLogic {
+public class Logic {
 
     /*The grid which holds the game*/
     private Cell[][][] grid;
@@ -33,7 +33,7 @@ public class ConwayLogic {
     /**
      * Builds a blank 30x30x30 grid, then randomly populates it to start the game.
      */
-    public ConwayLogic()
+    public Logic()
     {
         grid = new Cell[gridDimension+1][gridDimension+1][gridDimension+1];
         for(int x = 0;x<gridDimension+1; x++)
@@ -75,7 +75,7 @@ public class ConwayLogic {
      * is to be used if a preset grid is already available or wanted to be created.
      * @param presetIndex the index number of the preset grid requested.
      */
-    public ConwayLogic(int presetIndex)
+    public Logic(int presetIndex)
     {
 
     }

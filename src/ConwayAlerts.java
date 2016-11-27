@@ -12,13 +12,15 @@ public class ConwayAlerts {
 
     //referencing main to start new game or change values if necessary.
     Main gameControler;
+    ConwayGUIBuilder gui;
 
     /**
      * @param main the main program
      */
-    public ConwayAlerts(Main main)
+    public ConwayAlerts(Main main, ConwayGUIBuilder gui)
     {
         this.gameControler = main;
+        this.gui = gui;
     }
 
 
@@ -30,6 +32,7 @@ public class ConwayAlerts {
     public boolean newGameConfirmation()
     {
         gameControler.pause();
+        gui.rotate(false);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("End Current Game?");
         alert.setHeaderText("Are you sure you want to exit" +
@@ -58,7 +61,7 @@ public class ConwayAlerts {
     public void newPresetGame()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Create a new Preset 3D ConwayLogic game");
+        alert.setTitle("Create a new Preset 3D Logic game");
         alert.setHeaderText("Please choose which Pre-set you would like run.");
         alert.setContentText("Choose your option.\n"+
                 "Choose your option.\n"+

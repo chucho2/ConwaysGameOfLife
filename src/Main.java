@@ -16,10 +16,10 @@ import javafx.util.Duration;
 public class Main extends Application {
 
     //Creates and manages the GUI for the Game
-    private GUIComponents gui;
+    private ConwayGUIBuilder gui;
 
     //The game logic for the Simulation
-    private ConwayLogic gameOfLife;
+    private Logic gameOfLife;
 
     //this is in charge of updating the main game every "Wall second"
     private Timeline timeline = new Timeline(new KeyFrame(
@@ -63,8 +63,8 @@ public class Main extends Application {
 
 
         //Build the GUI and fire up the game.
-        gui = new GUIComponents(this);
-        gameOfLife = new ConwayLogic();
+        gui = new ConwayGUIBuilder(this);
+        gameOfLife = new Logic();
 
         //Building the Master pane, adding the main game in the respective toolbars in their positions.
         BorderPane pane = new BorderPane();
@@ -75,7 +75,7 @@ public class Main extends Application {
         //Wrapping things up and throwing them to the screen.
         Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("ConwayLogic's 3D Game of Life - Demitri Maestas");//Except for this.
+        primaryStage.setTitle("Logic's 3D Game of Life - Demitri Maestas");//Except for this.
         primaryStage.setResizable(false);
         primaryStage.show();
 

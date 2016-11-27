@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * @author Demitri Maestas
  */
-public class GUIComponents {
+public class ConwayGUIBuilder {
 
     final Group root = new Group();
     final Xform axisGroup = new Xform();
@@ -58,7 +58,7 @@ public class GUIComponents {
 
 
 
-    public GUIComponents(Main main)
+    public ConwayGUIBuilder(Main main)
     {
         this.gameControler = main;
         ConwayToolBar toolBars = new ConwayToolBar(gameControler,this);
