@@ -61,14 +61,6 @@ public class Cell extends Xform{
             String message = "Must give 3 co-ords to Cell Object";
             throw new UnsupportedOperationException(message);
         }
-        for(int i = 0; i < 3;i++)
-        {
-            if((position[i] < 0 ||  position[i] > 30) && type != CellState.BUFFER)
-            {
-                String message = "Non-Buffered Cell Must have \"0 < X,Y,Z position <30\"";
-                throw new UnsupportedOperationException(message);
-            }
-        }
         if(generateGUIComponents)
         {
             if(type != CellState.BUFFER)

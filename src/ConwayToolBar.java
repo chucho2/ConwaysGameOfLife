@@ -147,12 +147,12 @@ public class ConwayToolBar {
            if(rotate.isSelected())
            {
                System.out.println("Here");
-               topGUI.rotate(true);
+               topGUI.getGrid().rotate(true);
            }
            else
            {
                System.out.println("HereTwo");
-               topGUI.rotate(false);
+               topGUI.getGrid().rotate(false);
            }
         });
         CheckBox music = new CheckBox("Music");

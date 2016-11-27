@@ -32,7 +32,7 @@ public class ConwayAlerts {
     public boolean newGameConfirmation()
     {
         gameControler.pause();
-        gui.rotate(false);
+        gui.getGrid().rotate(false);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("End Current Game?");
         alert.setHeaderText("Are you sure you want to exit" +

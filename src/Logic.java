@@ -20,7 +20,7 @@ public class Logic {
     int[] r = {3,3,3,2};
 
     //The default dimension for the grid. Sorry, not making this three. Haha.
-    private int gridDimension = 30;
+    private int gridDimension = 20;
 
     /*How do I document this? haha...*/
     {
@@ -42,13 +42,16 @@ public class Logic {
             {
                 for(int z = 0;z<gridDimension+1; z++)
                 {
-                    int[] position = new int[] {x,y,z};
+                    int[] coords = new int[] {x,y,z};
+                    int[] position = new int[] {-(gridDimension/2)+x
+                                               ,-(gridDimension/2)+y
+                                               ,-(gridDimension/2)+z};
 
 
                     for(int i = 0; i<3;i++)
                     {
                         //Adding the buffer Cells
-                        if(position[i] == 0 || position[i] == gridDimension)
+                        if(coords[i] == 0 || coords[i] == gridDimension)
                         {
                             grid[x][y][z] = new Cell(Cell.CellState.BUFFER, position);
                         }
@@ -63,12 +66,12 @@ public class Logic {
                                 liveCells.add(grid[x][y][z]);
                             }
                         }
-                        }
-
                     }
+
                 }
             }
         }
+    }
 
 
     /**

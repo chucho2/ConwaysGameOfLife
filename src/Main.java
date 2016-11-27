@@ -69,7 +69,7 @@ public class Main extends Application {
         //Building the Master pane, adding the main game in the respective toolbars in their positions.
         BorderPane pane = new BorderPane();
         pane.setTop(gui.getTopToolBar());
-        pane.setCenter(gui.getGameBoard());
+        pane.setCenter(gui.getGrid().getGameBoard());
         pane.setBottom(gui.getBottomToolBar());
 
         //Wrapping things up and throwing them to the screen.
@@ -81,8 +81,8 @@ public class Main extends Application {
 
         //Starting the game
 
-        gui.addCells(gameOfLife.getFixedCells());
-        gui.addCells(gameOfLife.getliveCells());
+        gui.getGrid().addCells(gameOfLife.getFixedCells());
+        gui.getGrid().addCells(gameOfLife.getliveCells());
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
@@ -90,9 +90,9 @@ public class Main extends Application {
 
     public void updateGame()
     {
-       gui.removeCells(gameOfLife.getDeadCells());
+       gui.getGrid().removeCells(gameOfLife.getDeadCells());
        gameOfLife.step();
-       gui.addCells(gameOfLife.getliveCells());
+       gui.getGrid().addCells(gameOfLife.getliveCells());
     }
 
     //http://www.java2s.com/Tutorials/Java/JavaFX/0440__JavaFX_Checkbox.htm

@@ -1,13 +1,15 @@
-/**
- * Created by chucho2 on 9/27/16.
- */
+
 
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
-
+/**
+ * I set the rotate to the center of the grid,
+ * but the Xform class was given to us
+ *
+ */
 public class Xform extends Group {
 
     public enum RotateOrder {
@@ -59,118 +61,5 @@ public class Xform extends Group {
         t.setX(x);
         t.setY(y);
         t.setZ(z);
-    }
-
-    public void setTranslate(double x, double y) {
-        t.setX(x);
-        t.setY(y);
-    }
-
-    // Cannot override these methods as they are final:
-    // public void setTranslateX(double x) { t.setX(x); }
-    // public void setTranslateY(double y) { t.setY(y); }
-    // public void setTranslateZ(double z) { t.setZ(z); }
-    // Use these methods instead:
-    public void setTx(double x) { t.setX(x); }
-    public void setTy(double y) { t.setY(y); }
-    public void setTz(double z) { t.setZ(z); }
-
-    public void setRotate(double x, double y, double z) {
-        rx.setAngle(x);
-        ry.setAngle(y);
-        rz.setAngle(z);
-    }
-
-    public void setRotateX(double x) { rx.setAngle(x); }
-    public void setRotateY(double y) { ry.setAngle(y); }
-    public void setRotateZ(double z) { rz.setAngle(z); }
-    public void setRx(double x) { rx.setAngle(x); }
-    public void setRy(double y) { ry.setAngle(y); }
-    public void setRz(double z) { rz.setAngle(z); }
-
-    public void setScale(double scaleFactor) {
-        s.setX(scaleFactor);
-        s.setY(scaleFactor);
-        s.setZ(scaleFactor);
-    }
-
-    public void setScale(double x, double y, double z) {
-        s.setX(x);
-        s.setY(y);
-        s.setZ(z);
-    }
-
-    // Cannot override these methods as they are final:
-    // public void setScaleX(double x) { s.setX(x); }
-    // public void setScaleY(double y) { s.setY(y); }
-    // public void setScaleZ(double z) { s.setZ(z); }
-    // Use these methods instead:
-    public void setSx(double x) { s.setX(x); }
-    public void setSy(double y) { s.setY(y); }
-    public void setSz(double z) { s.setZ(z); }
-
-    public void setPivot(double x, double y, double z) {
-        p.setX(x);
-        p.setY(y);
-        p.setZ(z);
-        ip.setX(-x);
-        ip.setY(-y);
-        ip.setZ(-z);
-    }
-
-    public void reset() {
-        t.setX(0.0);
-        t.setY(0.0);
-        t.setZ(0.0);
-        rx.setAngle(0.0);
-        ry.setAngle(0.0);
-        rz.setAngle(0.0);
-        s.setX(1.0);
-        s.setY(1.0);
-        s.setZ(1.0);
-        p.setX(0.0);
-        p.setY(0.0);
-        p.setZ(0.0);
-        ip.setX(0.0);
-        ip.setY(0.0);
-        ip.setZ(0.0);
-    }
-
-    public void resetTSP() {
-        t.setX(0.0);
-        t.setY(0.0);
-        t.setZ(0.0);
-        s.setX(1.0);
-        s.setY(1.0);
-        s.setZ(1.0);
-        p.setX(0.0);
-        p.setY(0.0);
-        p.setZ(0.0);
-        ip.setX(0.0);
-        ip.setY(0.0);
-        ip.setZ(0.0);
-    }
-
-    public void debug() {
-        System.out.println("t = (" +
-                t.getX() + ", " +
-                t.getY() + ", " +
-                t.getZ() + ")  " +
-                "r = (" +
-                rx.getAngle() + ", " +
-                ry.getAngle() + ", " +
-                rz.getAngle() + ")  " +
-                "s = (" +
-                s.getX() + ", " +
-                s.getY() + ", " +
-                s.getZ() + ")  " +
-                "p = (" +
-                p.getX() + ", " +
-                p.getY() + ", " +
-                p.getZ() + ")  " +
-                "ip = (" +
-                ip.getX() + ", " +
-                ip.getY() + ", " +
-                ip.getZ() + ")");
     }
 }
