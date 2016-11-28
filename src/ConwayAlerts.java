@@ -31,8 +31,6 @@ public class ConwayAlerts {
      */
     public boolean newGameConfirmation()
     {
-        gameControler.pause();
-        gui.getGrid().rotate(false);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("End Current Game?");
         alert.setHeaderText("Are you sure you want to exit" +
@@ -42,7 +40,6 @@ public class ConwayAlerts {
         if (result.get() == ButtonType.OK){
             return true;
         } else {
-            gameControler.play();
             return false;
         }
     }
@@ -50,9 +47,9 @@ public class ConwayAlerts {
     /**
      * Creates a new random game using main.
      */
-    public  void newRandomGame()
+    public void newRandomGame()
     {
-
+         gameControler.newGame();
     }
 
     /**
@@ -100,4 +97,21 @@ public class ConwayAlerts {
     {
 
     }
+
+
+    public void displayHelp()
+    {
+        gameControler.pause();
+        gui.getGrid().setRotate(false);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game of Life - Help");
+        alert.setHeaderText("Help Menu:");
+        //TODO put the enitire help menu here
+        alert.setContentText("FIX ME");
+        alert.showAndWait();
+        gui.getGrid().setRotate(true);
+        gameControler.play();
+    }
+
+
 }

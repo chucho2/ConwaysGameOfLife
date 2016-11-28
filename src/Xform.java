@@ -6,7 +6,7 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 /**
- * I set the rotate to the center of the grid,
+ * I set the setRotate to the center of the grid,
  * but the Xform class was given to us
  *
  */

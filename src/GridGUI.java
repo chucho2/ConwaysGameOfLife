@@ -36,19 +36,14 @@ public class GridGUI {
     private static final double AXIS_LENGTH = 250.0;
     private Xform gridXform;
 
-
-
-    /*These timeles are used in tandem with the Arrow keys to control zooming*/
-    Timeline zoomIn = new Timeline(new KeyFrame(
-            Duration.millis(10),
-            ae -> zoom(true)));
-    Timeline zoomOut = new Timeline(new KeyFrame(
-            Duration.millis(10),
-            ae -> zoom(false)));
+    private ArrayList<Cell> cells = new ArrayList<Cell>();
 
 
 
-    /*This will fire to rotate the camera Angle using AutoAnimate*/
+
+
+
+    /*This will fire to setRotate the camera Angle using AutoAnimate*/
     private Timeline rotate = new Timeline(new KeyFrame(
             Duration.millis(10),
             ae -> autoAnimate()));
@@ -99,7 +94,7 @@ public class GridGUI {
 
     /**
      * Auto Animate is in charge of rotating the Camera.
-     * When the "rotate" timer fires, it add's some
+     * When the "setRotate" timer fires, it add's some
      * amount to every angle degree.
      */
     private void autoAnimate() {
@@ -113,73 +108,24 @@ public class GridGUI {
      * will adjust the Z axis angle to let someone zoom in.
      * @param in is true if we are zooming in.
      */
-    private void zoom(boolean in)
+    public void zoom(boolean in)
     {
         if(in)camera.setTranslateZ(camera.getTranslateZ()+0.5);
         else camera.setTranslateZ(camera.getTranslateZ()-0.5);
     }
 
-    /**
-     * will check cases, to see if up or down was pressed,
-     * and will then call zoom to adjust the Z axis accordingly.
-     * @param scene of which everything is located.
-     */
-    private void handleKeyboard(SubScene scene) {
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case UP:
-                        zoomIn.setCycleCount(Animation.INDEFINITE);
-                        zoomIn.play();
-                        break;
-                    case DOWN:
-                        zoomOut.setCycleCount(Animation.INDEFINITE);
-                        zoomOut.play();
-                        break;
-                    case Z:
-                        cameraXform2.t.setX(0.0);
-                        cameraXform2.t.setY(0.0);
-                        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
-                        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
-                        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
-                        break;
-                }
-            }
-        });
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case UP:
-                        zoomIn.stop();
-                        break;
-                    case DOWN:
-                        zoomOut.stop();
-                        break;
-                    case Z:
-                        cameraXform2.t.setX(0.0);
-                        cameraXform2.t.setY(0.0);
-                        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
-                        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
-                        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
-                        break;
-                    case X:
-                        axisGroup.setVisible(!axisGroup.isVisible());
-                        break;
-                }
-            }
-        });
-    }
+
 
     /**
      * @param rotate true if the grid should be rotating; else false.
      */
-    public void rotate(boolean rotate)
+    public void setRotate(boolean rotate)
     {
         if(rotate)this.rotate.play();
         else  this.rotate.pause();
     }
+
+
     /*This actually takes care of building the simulation for us,
      * will be called by the splash screen at some point with custom
      * parameters.
@@ -194,32 +140,42 @@ public class GridGUI {
         buildCamera();
         buildAxes();
         SubScene scene = new SubScene(root,1024,640);
-        handleKeyboard(scene);
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
         //handleKeyboard(scene);
 
 
 
-        /*Setting the Main to rotate*/
+        /*Setting the Main to setRotate*/
         rotate.setCycleCount(Animation.INDEFINITE);
         rotate.play();
         return scene;
     }
 
-    public void removeCells(ArrayList<Cell> cells)
-    {
-        //TODO fill out this
-    }
+
 
     public void addCells(ArrayList<Cell> cells)
     {
-
+        this.cells = cells;
         for(Cell cell: cells)
         {
             int[] positions = cell.getPosition();
             cell.setTranslate(positions[0],positions[1],positions[2]);
             root.getChildren().add(cell);
         }
+    }
+
+    public void purge()
+    {
+        if(cells != null)
+        {
+            for(Cell cell: cells)
+            {
+                int[] positions = cell.getPosition();
+                cell.setTranslate(positions[0],positions[1],positions[2]);
+                root.getChildren().remove(cell);
+            }
+        }
+
     }
 }

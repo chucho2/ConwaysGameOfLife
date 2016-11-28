@@ -21,6 +21,9 @@ public class Main extends Application {
     //The game logic for the Simulation
     private Logic gameOfLife;
 
+    //game can interact with the keybored
+    private HandleInput keyboard;
+
     //this is in charge of updating the main game every "Wall second"
     private Timeline timeline = new Timeline(new KeyFrame(
             Duration.millis(1000),
@@ -32,7 +35,6 @@ public class Main extends Application {
      */
     public void pause()
     {
-
         timeline.pause();
     }
 
@@ -41,7 +43,6 @@ public class Main extends Application {
      */
     public void play()
     {
-
         timeline.play();
     }
 
@@ -64,7 +65,6 @@ public class Main extends Application {
 
         //Build the GUI and fire up the game.
         gui = new ConwayGUIBuilder(this);
-        gameOfLife = new Logic();
 
         //Building the Master pane, adding the main game in the respective toolbars in their positions.
         BorderPane pane = new BorderPane();
@@ -74,26 +74,53 @@ public class Main extends Application {
 
         //Wrapping things up and throwing them to the screen.
         Scene scene = new Scene(pane);
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Logic's 3D Game of Life - Demitri Maestas");//Except for this.
         primaryStage.setResizable(false);
         primaryStage.show();
 
-        //Starting the game
+        //Making keyboard and mouse interactive in game
+        keyboard = new HandleInput(scene,gui.getGrid());
 
-        gui.getGrid().addCells(gameOfLife.getFixedCells());
-        gui.getGrid().addCells(gameOfLife.getliveCells());
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        //Starting the game
+        newGame();
+
 
     }
 
+    /**
+     * step the logic of the game 1 itteration
+     */
     public void updateGame()
     {
-       gui.getGrid().removeCells(gameOfLife.getDeadCells());
        gameOfLife.step();
-       gui.getGrid().addCells(gameOfLife.getliveCells());
     }
+
+    /**
+     * make a new game with the assistance of the Game Builder Class
+     * called anytime a new game is made.
+     */
+    public void newGame()
+    {
+        timeline.stop();
+
+        GameBuilder gameCreator = new GameBuilder();
+        gameOfLife = new Logic(gameCreator.getGridSize(),gameCreator.getRValues(),
+                gameCreator.getGrid(),gameCreator.getAliveCells(),
+                gameCreator.getDeadCells(), gameCreator.getBufferCells());
+        gui.getGrid().purge();
+        gui.getGrid().addCells(gameOfLife.getBufferCells());
+        gui.getGrid().addCells(gameOfLife.getAliveCells());
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    public ConwayGUIBuilder getGui()
+    {
+        return this.gui;
+    }
+
 
     //http://www.java2s.com/Tutorials/Java/JavaFX/0440__JavaFX_Checkbox.htm
     //https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html

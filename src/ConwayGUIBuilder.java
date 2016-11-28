@@ -1,30 +1,22 @@
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.EventHandler;
-import javafx.scene.*;
 import javafx.scene.control.ToolBar;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 /**
+ * Gathers the three main components of the GUI portion of the game:
+ * Top toolbar - which is the controls on the top of the screen
+ * Grid GUI - shows the actual game board and the cells
+ * Bottom toolbar - shows the update messages and the bottom controls.
  * @author Demitri Maestas
  */
 public class ConwayGUIBuilder {
 
-    private Xform gridXform;
 
+    //the Main method, used to access everything else.
     private Main gameControler;
+
+    //
     private GridGUI gridGUI;
     private ToolBar topToolbar;
     private ToolBar bottomToolBar;
-
-
 
 
 

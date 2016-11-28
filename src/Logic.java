@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * @author Demitri Maestas
@@ -8,79 +7,40 @@ public class Logic {
 
     /*The grid which holds the game*/
     private Cell[][][] grid;
+    private int[] r;
+    private int gridSize;
 
     private ArrayList<Cell> liveCells;
     private ArrayList<Cell> deadCells;
-    private ArrayList<Cell> fixedCells;
+    private ArrayList<Cell> bufferCells;
 
-    //The Number generator for a random game
-    private Random chance = new Random();
 
-    //This is the default value for r, as per the spec.
-    int[] r = {3,3,3,2};
-
-    //The default dimension for the grid. Sorry, not making this three. Haha.
-    private int gridDimension = 20;
 
     /*How do I document this? haha...*/
     {
       liveCells = new ArrayList<Cell>();
       deadCells = new ArrayList<Cell>();
-      fixedCells = new ArrayList<Cell>();
+      bufferCells = new ArrayList<Cell>();
 
     }
 
-    /**
-     * Builds a blank 30x30x30 grid, then randomly populates it to start the game.
-     */
-    public Logic()
+
+    public Logic(int size, int[] r, Cell[][][] grid)
     {
-        grid = new Cell[gridDimension+1][gridDimension+1][gridDimension+1];
-        for(int x = 0;x<gridDimension+1; x++)
-        {
-            for(int y = 0;y<gridDimension+1; y++)
-            {
-                for(int z = 0;z<gridDimension+1; z++)
-                {
-                    int[] coords = new int[] {x,y,z};
-                    int[] position = new int[] {-(gridDimension/2)+x
-                                               ,-(gridDimension/2)+y
-                                               ,-(gridDimension/2)+z};
-
-
-                    for(int i = 0; i<3;i++)
-                    {
-                        //Adding the buffer Cells
-                        if(coords[i] == 0 || coords[i] == gridDimension)
-                        {
-                            grid[x][y][z] = new Cell(Cell.CellState.BUFFER, position);
-                        }
-
-                        //Adding the regular cells
-                        else
-                        {
-                            grid[x][y][z] = new Cell(position);
-                            if(chance.nextInt(100) == 0)
-                            {
-                                grid[x][y][z].setAlive();
-                                liveCells.add(grid[x][y][z]);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
+        this(size,r,grid,new ArrayList<Cell>(), new ArrayList<Cell>(), new ArrayList<Cell>());
     }
 
 
-    /**
-     * is to be used if a preset grid is already available or wanted to be created.
-     * @param presetIndex the index number of the preset grid requested.
-     */
-    public Logic(int presetIndex)
-    {
 
+    public Logic(int size, int[] r, Cell[][][] grid,ArrayList<Cell> aliveCells,
+                 ArrayList<Cell> deadCells, ArrayList<Cell> bufferCells)
+    {
+         this.gridSize = size;
+         this.r = r;
+         this.grid = grid;
+         this.liveCells = aliveCells;
+         this.deadCells = deadCells;
+         this.bufferCells = bufferCells;
     }
 
     /**
@@ -99,13 +59,9 @@ public class Logic {
         return grid;
     }
 
-    public int getGridDimension()
-    {
-        return this.gridDimension;
-    }
 
 
-    public ArrayList<Cell> getliveCells()
+    public ArrayList<Cell> getAliveCells()
     {
         return liveCells;
     }
@@ -114,16 +70,10 @@ public class Logic {
     {
         return deadCells;
     }
-    public ArrayList<Cell> getFixedCells()
+    public ArrayList<Cell> getBufferCells()
     {
-        return fixedCells;
+        return bufferCells;
     }
 
-
-    /*Sets up a non-preset grid for us.*/
-    private void createGrid()
-    {
-
-    }
 
 }

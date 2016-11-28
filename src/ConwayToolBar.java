@@ -43,7 +43,6 @@ public class ConwayToolBar {
             {
                 alerts.newRandomGame();
             }
-            throw new UnsupportedOperationException("Not Implemented Yet");
 
         });
         Button newPreset = new Button("Preset");
@@ -70,7 +69,7 @@ public class ConwayToolBar {
         });
         Button help = new Button("Help");
         help.setOnAction(e->{
-            throw new UnsupportedOperationException("Not Implemented Yet");
+            alerts.displayHelp();
         });
 
 
@@ -146,17 +145,18 @@ public class ConwayToolBar {
         rotate.setOnAction(e->{
            if(rotate.isSelected())
            {
-               System.out.println("Here");
-               topGUI.getGrid().rotate(true);
+               topGUI.getGrid().setRotate(true);
            }
            else
            {
-               System.out.println("HereTwo");
-               topGUI.getGrid().rotate(false);
+               topGUI.getGrid().setRotate(false);
            }
         });
         CheckBox music = new CheckBox("Music");
         music.setSelected(true);
+        music.setOnAction(e->{
+            throw new UnsupportedOperationException("Not Implemented Yet");
+        });
 
 
 
@@ -190,7 +190,7 @@ public class ConwayToolBar {
 
 
 
-    private void sendMessage(String message, MessageType type)
+    public void sendMessage(String message, MessageType type)
     {
          messageTimer.stop();
          if(type == MessageType.WARNING)
