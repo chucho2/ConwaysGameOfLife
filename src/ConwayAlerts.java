@@ -49,7 +49,8 @@ public class ConwayAlerts {
      */
     public void newRandomGame()
     {
-         gameControler.newGame();
+        gameControler.endCurrentGame();
+        gameControler.newGame();
     }
 
     /**
@@ -80,7 +81,8 @@ public class ConwayAlerts {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeOne){
-            // ... user chose "One"
+            gameControler.endCurrentGame();
+            gameControler.newGame(new GameBuilder(3));
         } else if (result.get() == buttonTypeTwo) {
             // ... user chose "Two"
         } else if (result.get() == buttonTypeThree) {

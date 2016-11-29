@@ -15,6 +15,7 @@ public class ConwayGUIBuilder {
 
     //
     private GridGUI gridGUI;
+    private ConwayToolBar toolBars;
     private ToolBar topToolbar;
     private ToolBar bottomToolBar;
 
@@ -23,19 +24,26 @@ public class ConwayGUIBuilder {
     public ConwayGUIBuilder(Main main)
     {
         this.gameControler = main;
-        ConwayToolBar toolBars = new ConwayToolBar(gameControler,this);
+        toolBars = new ConwayToolBar(gameControler,this);
         topToolbar = toolBars.createTopToolBar();
         bottomToolBar = toolBars.createBottomToolBar();
         gridGUI = new GridGUI();
     }
 
 
+    public ConwayToolBar getConwayBars()
+    {
+        return this.toolBars;
+    }
+    public void newGrid(int gridSize)
+    {
+        this.gridGUI = null;
+        gridGUI = new GridGUI(gridSize);
+    }
     public GridGUI getGrid()
     {
         return this.gridGUI;
     }
-
-
 
 
     public ToolBar getTopToolBar()

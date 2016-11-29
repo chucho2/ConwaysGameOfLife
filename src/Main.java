@@ -21,36 +21,16 @@ public class Main extends Application {
     //The game logic for the Simulation
     private Logic gameOfLife;
 
-    //game can interact with the keybored
-    private HandleInput keyboard;
+    //the Speed of the game, default is 100%
+    private int gameSpeed = 100;
+
+    //The Top GUI
+    BorderPane pane;
 
     //this is in charge of updating the main game every "Wall second"
     private Timeline timeline = new Timeline(new KeyFrame(
-            Duration.millis(1000),
+            Duration.millis((200/gameSpeed)*500),
             ae -> updateGame()));
-
-
-    /**
-     * stops the game timer, "pausing" the game
-     */
-    public void pause()
-    {
-        timeline.pause();
-    }
-
-    /**
-     * starts the game timer, "resuming" the game
-     */
-    public void play()
-    {
-        timeline.play();
-    }
-
-    public boolean isRunning()
-    {
-        if(timeline.getStatus() == Animation.Status.PAUSED)return false;
-        else return true;
-    }
 
     /**
      * Calls for a GUI, calls for 3D Game Of Life Logic,
@@ -62,65 +42,108 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-
         //Build the GUI and fire up the game.
         gui = new ConwayGUIBuilder(this);
 
         //Building the Master pane, adding the main game in the respective toolbars in their positions.
-        BorderPane pane = new BorderPane();
+        pane = new BorderPane();
         pane.setTop(gui.getTopToolBar());
-        pane.setCenter(gui.getGrid().getGameBoard());
+        pane.setCenter(gui.getGrid().getGridGUI());
         pane.setBottom(gui.getBottomToolBar());
 
         //Wrapping things up and throwing them to the screen.
         Scene scene = new Scene(pane);
-
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Logic's 3D Game of Life - Demitri Maestas");//Except for this.
+        primaryStage.setTitle("Conways's 3D Game of Life - Demitri Maestas");//Except for this.
         primaryStage.setResizable(false);
         primaryStage.show();
 
         //Making keyboard and mouse interactive in game
-        keyboard = new HandleInput(scene,gui.getGrid());
+        HandleInput keyboard = new HandleInput(scene,gui.getGrid());
 
         //Starting the game
         newGame();
-
-
+        timeline.play();
     }
 
     /**
-     * step the logic of the game 1 itteration
+     * step the logic of the game 1 itteration, and update
+     * the GUI accordingly.
      */
     public void updateGame()
     {
-       gameOfLife.step();
+        gui.getGrid().removeCells(gameOfLife.getDeadCells());
+        gameOfLife.step();
+        gui.getGrid().addCells(gameOfLife.getAliveCells());
+    }
+
+    /**
+     * make a new game with the assistance of the Game Builder Class
+     * called anytime a new game is made. Uses a Game Builder with
+     * default game values and a random starting grid.
+     */
+    public void newGame()
+    {
+         this.newGame(new GameBuilder());
     }
 
     /**
      * make a new game with the assistance of the Game Builder Class
      * called anytime a new game is made.
      */
-    public void newGame()
+    public void newGame(GameBuilder gameCreator)
     {
         timeline.stop();
-
-        GameBuilder gameCreator = new GameBuilder();
+        gui.newGrid(gameCreator.getGridSize());
+        pane.setCenter(gui.getGrid().getGridGUI());
         gameOfLife = new Logic(gameCreator.getGridSize(),gameCreator.getRValues(),
                 gameCreator.getGrid(),gameCreator.getAliveCells(),
                 gameCreator.getDeadCells(), gameCreator.getBufferCells());
-        gui.getGrid().purge();
-        gui.getGrid().addCells(gameOfLife.getBufferCells());
         gui.getGrid().addCells(gameOfLife.getAliveCells());
         timeline.setCycleCount(Animation.INDEFINITE);
+        gui.getConwayBars().updateBoundaryCheckbox(false);
+        gui.getConwayBars().updateRValues(gameCreator.getRValues());
+        gui.getConwayBars().updateGridSize(gameCreator.getGridSize());
         timeline.play();
     }
+
+    /**
+     * ends the current game and removes the Grid from the screen.
+     */
+    public void endCurrentGame()
+    {
+        timeline.stop();
+    }
+
+    /**
+     * stops the game timer, "pausing" the game
+     */
+    public void pause()
+    {
+        gui.getConwayBars().updatePlayAndPauseButton(false);
+        timeline.pause();
+    }
+
+    /**
+     * starts the game timer, "resuming" the game
+     */
+    public void play()
+    {
+        gui.getConwayBars().updatePlayAndPauseButton(true);
+        timeline.play();
+    }
+
+    public boolean isRunning()
+    {
+        if(timeline.getStatus() == Animation.Status.PAUSED)return false;
+        else return true;
+    }
+
 
     public ConwayGUIBuilder getGui()
     {
         return this.gui;
     }
-
 
     //http://www.java2s.com/Tutorials/Java/JavaFX/0440__JavaFX_Checkbox.htm
     //https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html

@@ -5,6 +5,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Duration;
@@ -24,6 +26,18 @@ public class ConwayToolBar {
     private Timeline messageTimer = new Timeline(new KeyFrame(
             Duration.millis(3000),
             ae -> messageToUser.setText("")));
+
+
+
+    private Label RValues = new Label("");
+    private Label gridSizeLabel = new Label("");
+
+
+    private Button playAndPause = new Button("Pause ||");
+    private Button forward = new Button("Step >>");
+    private CheckBox boundary = new CheckBox("Boundary");
+
+
     public ConwayToolBar(Main main, ConwayGUIBuilder topGUI)
     {
         this.gameControler = main;
@@ -51,7 +65,6 @@ public class ConwayToolBar {
             {
                 alerts.newPresetGame();
             }
-            throw new UnsupportedOperationException("Not Implemented Yet");
         });
         Button newCustom = new Button("Custom");
         newCustom.setOnAction(e->{
@@ -61,7 +74,27 @@ public class ConwayToolBar {
             }
             throw new UnsupportedOperationException("Not Implemented Yet");
         });
-        Label infoMessage = new Label(" Grid: 30 x 30    R[0,0,0,0]      60FPS");
+        Label spacer = new Label("   ");
+        TextField speed = new TextField ();
+        speed.setMaxSize(50,100);
+        speed.clear();
+        speed.setOnKeyPressed(e -> {
+            if(e.getCode() == KeyCode.ENTER)
+            {
+                try
+                {
+                    int newSpeed = Integer.parseInt(speed.getText());
+                    if(newSpeed > 0 && newSpeed <101)
+                    {
+                    }
+                }catch (Exception ex)
+                {
+
+                }
+                System.out.println("Yes");
+            }
+        });
+
 
         Button options = new Button("Game Options");
         options.setOnAction(e->{
@@ -76,8 +109,8 @@ public class ConwayToolBar {
 
         ToolBar toolBar = new ToolBar();
 
-        HBox left = new HBox(newGame,newRandom,newPreset,newCustom);
-        HBox center = new HBox(infoMessage);
+        HBox left = new HBox(newGame,newRandom,newPreset);
+        HBox center = new HBox(RValues,gridSizeLabel,speed);
         HBox right = new HBox(options,help);
 
         HBox.setHgrow( left, Priority.ALWAYS );
@@ -103,42 +136,32 @@ public class ConwayToolBar {
 
     protected ToolBar createBottomToolBar()
     {
-        Button importGame = new Button("Import");
-        importGame.setOnAction(e->{
-            throw new UnsupportedOperationException("Not Implemented Yet");
-        });
         Button exportGame = new Button("Export");
         exportGame.setOnAction(e->{
             throw new UnsupportedOperationException("Not Implemented Yet");
         });
 
-        Button back = new Button("<<");
-        back.setOnAction(e->{
-            throw new UnsupportedOperationException("Not Implemented Yet");
-        });
-        Button playAndPause = new Button("||");
-        playAndPause.setOnAction(e->{
-            System.out.println("Play and Pause");
-            if(playAndPause.getText().equals("||"))
+        forward.setOnAction(e->{
+            if(!gameControler.isRunning())
             {
-                playAndPause.setText(">");
+                gameControler.updateGame();
+            }
+        });
+        forward.setDisable(true);
+
+        playAndPause.setOnAction(e->{
+            if(playAndPause.getText().equals("Pause ||"))
+            {
                 gameControler.pause();
+
             }
             else
             {
-                playAndPause.setText("||");
                 gameControler.play();
             }
         });
 
-        Button forward = new Button(">>");
-        forward.setOnAction(e->{
-            if(gameControler.isRunning())
-            {
-                sendMessage("Game must be paused to manually step.",MessageType.WARNING);
-            }
-            else gameControler.updateGame();
-        });
+
 
         CheckBox rotate = new CheckBox("Auto Rotate");
         rotate.setSelected(true);
@@ -152,20 +175,39 @@ public class ConwayToolBar {
                topGUI.getGrid().setRotate(false);
            }
         });
+
+        boundary.setOnAction(e->{
+            if(boundary.isSelected())
+            {
+                topGUI.getGrid().setBoundary(true);
+            }
+            else
+            {
+                topGUI.getGrid().setBoundary(false);
+            }
+        });
         CheckBox music = new CheckBox("Music");
         music.setSelected(true);
         music.setOnAction(e->{
             throw new UnsupportedOperationException("Not Implemented Yet");
         });
-
-
+        Button zoomOut = new Button(" - ");
+        zoomOut.setOnAction(e->{
+            gameControler.getGui().getGrid().zoom(false);
+        });
+        Label zoomMessage = new Label("Zoom");
+        Button zoomIn= new Button("+");
+        zoomIn.setOnAction(e->{
+            gameControler.getGui().getGrid().zoom(true);
+        });
 
 
         ToolBar toolBar = new ToolBar();
 
-        HBox left = new HBox(back, playAndPause, forward,rotate,music);
-        HBox center = new HBox(messageToUser);
-        HBox right = new HBox(importGame, exportGame);
+        HBox left = new HBox(playAndPause,
+                forward,rotate,boundary,music);
+        HBox center = new HBox(zoomIn,zoomMessage,zoomOut);
+        HBox right = new HBox(exportGame);
 
         HBox.setHgrow( left, Priority.ALWAYS );
         HBox.setHgrow( center, Priority.ALWAYS );
@@ -188,21 +230,38 @@ public class ConwayToolBar {
     }
 
 
-
-
-    public void sendMessage(String message, MessageType type)
+    public void updateGridSize(int gridSize)
     {
-         messageTimer.stop();
-         if(type == MessageType.WARNING)
-         {
-             messageToUser.setText(message);
-         }
-         messageTimer.play();
-
+        gridSizeLabel.setText("Grid-Dimensions [x:"+gridSize+
+                ",y:"+gridSize+",z:"+gridSize+"]   ");
     }
 
-    private enum MessageType
+    public void updateRValues(int[] newRValues)
     {
-        INFO, WARNING;
+         RValues.setText("R-Values["+newRValues[0]+
+                 ","+newRValues[1]+","+newRValues[2]+","+
+                 newRValues[3]+"]   ");
+    }
+    /**
+     * @param play true if the game is paused; else false;
+     */
+    public void updatePlayAndPauseButton(boolean play)
+    {
+        if(play)
+        {
+            playAndPause.setText("Pause ||");
+            forward.setDisable(true);
+        }
+        else
+        {
+            playAndPause.setText("Play    >");
+            forward.setDisable(false);
+        }
+    }
+
+    public void updateBoundaryCheckbox(boolean on)
+    {
+        if(on)boundary.setSelected(true);
+        else boundary.setSelected(false);
     }
 }

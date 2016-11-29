@@ -1,6 +1,11 @@
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.util.Duration;
 
 /**
  * holds all of the information about a specific state of
@@ -21,6 +26,23 @@ public class Cell extends Xform{
     //GUI Components
     private PhongMaterial cellColor;
     private Box displayCell;
+
+    Color greenColor = new Color(0,1,0,1);
+
+    //In charge of updating the cells animation
+    Timeline grow = new Timeline(new KeyFrame(
+            Duration.millis(10),
+            ae -> grow()));
+
+    //In charge of updating the cells animation
+    Timeline shrink = new Timeline(new KeyFrame(
+            Duration.millis(10),
+            ae -> shrink()));
+
+    private volatile boolean alive = false;
+
+
+
 
 
     /**
@@ -56,6 +78,9 @@ public class Cell extends Xform{
      */
     public Cell(CellState type, int[] position, boolean generateGUIComponents)
     {
+        grow.setCycleCount(100);
+        shrink.setCycleCount(Timeline.INDEFINITE);
+
         if(position.length != 3)
         {
             String message = "Must give 3 co-ords to Cell Object";
@@ -66,35 +91,15 @@ public class Cell extends Xform{
             if(type != CellState.BUFFER)
             {
                 cellColor = new PhongMaterial();
+                cellColor.setDiffuseColor(greenColor);
                 displayCell= new Box(0.1,0.1,0.1);
                 this.getChildren().add(displayCell);
                 displayCell.setMaterial(cellColor);
-            }
-            else
-            {
-                cellColor = new PhongMaterial();
-                cellColor.setDiffuseColor(Color.BEIGE);
-                displayCell= new Box(1,1,1);
-                this.getChildren().add(displayCell);
-                displayCell.setMaterial(cellColor);
-            }
 
+            }
         }
         this.type = type;
         this.position = position;
-    }
-
-
-    /**
-     * sets the Cell Object and its potential JavaFX Box
-     * to "Dead" per game rules.
-     */
-    public void setDead()
-    {
-        if(this.type != CellState.BUFFER)
-        {
-            this.type = CellState.DEAD;
-        }
     }
 
     /**
@@ -105,19 +110,25 @@ public class Cell extends Xform{
     {
         if(this.type != CellState.BUFFER)
         {
+            grow.play();
             this.type = CellState.ALIVE;
         }
     }
 
     /**
-     * @return true if CellState is "Alive"; else false.
+     * sets the Cell Object and its potential JavaFX Box
+     * to "Alive" per game rules.
      */
-    public boolean isAlive()
+    public void setDead()
     {
-        if(this.type == CellState.ALIVE)return true;
-        return false;
+        if(this.type != CellState.BUFFER)
+        {
+            this.alive = false;
+            this.type = CellState.DEAD;
+            cellColor.setDiffuseColor(new Color(.5,0,0,1));
+            shrink.play();
+        }
     }
-
 
     public int[] getPosition()
     {
@@ -133,6 +144,26 @@ public class Cell extends Xform{
                 ","+position[1]+","+position[2]+"]: State ="+this.type;
         return Return;
     }
+
+
+    private void grow()
+    {
+        displayCell.setDepth(displayCell.getDepth()+.01);
+        displayCell.setWidth(displayCell.getWidth()+.01);
+        displayCell.setHeight(displayCell.getHeight()+.01);
+    }
+
+    private void shrink()
+    {
+        displayCell.setDepth(displayCell.getDepth()-.01);
+        displayCell.setWidth(displayCell.getWidth()-.01);
+        displayCell.setHeight(displayCell.getHeight()-.01);
+        cellColor.setDiffuseColor(
+                new Color(cellColor.getDiffuseColor().getRed()-.000,
+                        0,
+                        0,1));
+    }
+
 
     /**
      * the States the cell can exist in.

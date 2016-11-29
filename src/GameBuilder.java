@@ -6,6 +6,7 @@ import java.util.Random;
  */
 public class GameBuilder {
 
+
     //The cells with their initial state after creation.
     private ArrayList<Cell> aliveCells;
     private ArrayList<Cell> deadCells;
@@ -21,7 +22,7 @@ public class GameBuilder {
     int[] r = {3,3,3,2};
 
     //The default dimension for the grid. Sorry, not making this three. Haha.
-    private int gridSize = 20;
+    private int gridSize;
 
 
     {
@@ -31,13 +32,19 @@ public class GameBuilder {
     }
 
 
+    public  GameBuilder()
+    {
+        this(30);
+    }
+
     /**
      * builds a new Conway 3D Game with default r values,
      * a 30x30 grid, and a one in 100 chance of any given
      * cell spawning with a live value.
      */
-    public GameBuilder()
+    public GameBuilder(int gridSize)
     {
+        this.gridSize = gridSize;
         grid = new Cell[gridSize+1][gridSize+1][gridSize+1];
         for(int x = 0;x<gridSize+1; x++)
         {
@@ -54,17 +61,19 @@ public class GameBuilder {
                     for(int i = 0; i<3;i++)
                     {
                         //Adding the buffer Cells
+
                         if(coords[i] == 0 || coords[i] == gridSize)
                         {
                             grid[x][y][z] = new Cell(Cell.CellState.BUFFER, position);
+                            bufferCells.add(grid[x][y][z]);
                         }
 
                         //Adding the regular cells
                         else
                         {
-                            grid[x][y][z] = new Cell(position);
-                            if(chance.nextInt(100) == 0)
+                            if(chance.nextInt(25) == 0)
                             {
+                                grid[x][y][z] = new Cell(position);
                                 grid[x][y][z].setAlive();
                                 aliveCells.add(grid[x][y][z]);
                             }
