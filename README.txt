@@ -13,7 +13,5 @@ Users can zoom in and out with the UP arrow key and DOWN arrow key.
 
 There are 5 interesting presets to enjoy.
 
-The Game uses multi threading to assist in the smooth life and death animations
-of the cells. The cell groping class is designed to chunk the cell updates down
-into smaller groups every time the frame rate dips below 60, without ever using
-more than 9 threads.
+The Camera is initialized dynamically, placing the initial distance from
+the camera to the center of the grid relative to the size of the grid.
