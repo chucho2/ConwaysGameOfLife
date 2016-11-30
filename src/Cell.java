@@ -20,8 +20,11 @@ public class Cell extends Xform{
     //The Type of Cell Object as per CellType Enum
     private CellState type;
 
-    //The [x,y,z] position of this Cell Object on the grid.
-    private int[] position;
+    //The [x,y,z] position of this Cell Object in the Logic Grids
+    private int[] logicPosition;
+
+    //The [x,y,z] position of this Cell Object in the GUI grids
+    private int[] guiPosition;
 
     //GUI Components
     private PhongMaterial cellColor;
@@ -48,40 +51,52 @@ public class Cell extends Xform{
     /**
      * assumes the Cell Object stars at CellState.DEAD,
      * and that the Cell Object will be used in a GUI.
-     * @param position of the Cell at construction
+     * @param logicPosition of the Cell int the Logic Grids
      */
-    public Cell(int[] position)
+    public Cell(int[] logicPosition)
     {
-        this(CellState.DEAD,position,true);
+        this(CellState.DEAD,logicPosition,null,true);
+    }
+
+    /**
+     * assumes the Cell Object stars at CellState.DEAD,
+     * and that the Cell Object will be used in a GUI.
+     * @param logicPosition of the Cell int the Logic Grids
+     * @param guiPosition of the Cell in the GUI Grids
+     */
+    public Cell(int[] logicPosition,int[] guiPosition)
+    {
+        this(CellState.DEAD,logicPosition,guiPosition,true);
     }
 
 
     /**
      * assumes that the Cell Object will be used in a GUI.
      * @param type of the Cell Object from CellState Enum
-     * @param position of the Cell at construction
+     * @param logicPosition of the Cell int the Logic Grids
+     * @param guiPosition of the Cell in the GUI Grids
      */
-    public Cell(CellState type, int[] position)
+    public Cell(CellState type,int[] logicPosition,int[] guiPosition)
     {
-        this(type,position,true);
+        this(type,logicPosition,guiPosition,true);
     }
 
 
     /**
-     *
      * @param type of the Cell Object from CellState Enum
-     * @param position of the Cell at construction
+     * @param logicPosition of the Cell int the Logic Grids
+     * @param guiPosition of the Cell in the GUI Grids
      * @param generateGUIComponents true if Cell object will be used
      *                              in a GUI; false if program is used
      *                              without a GUI and requests improved
      *                              efficiency.
      */
-    public Cell(CellState type, int[] position, boolean generateGUIComponents)
+    public Cell(CellState type, int[] logicPosition,int[] guiPosition, boolean generateGUIComponents)
     {
         grow.setCycleCount(100);
         shrink.setCycleCount(Timeline.INDEFINITE);
 
-        if(position.length != 3)
+        if(logicPosition.length != 3 || guiPosition.length != 3)
         {
             String message = "Must give 3 co-ords to Cell Object";
             throw new UnsupportedOperationException(message);
@@ -99,7 +114,8 @@ public class Cell extends Xform{
             }
         }
         this.type = type;
-        this.position = position;
+        this.logicPosition = logicPosition;
+        this.guiPosition = guiPosition;
     }
 
     /**
@@ -117,7 +133,7 @@ public class Cell extends Xform{
 
     /**
      * sets the Cell Object and its potential JavaFX Box
-     * to "Alive" per game rules.
+     * to "A" per game rules.
      */
     public void setDead()
     {
@@ -130,9 +146,20 @@ public class Cell extends Xform{
         }
     }
 
-    public int[] getPosition()
+    /**
+     * @return the logical position of the cell
+     */
+    public int[] getLogicPosition()
     {
-        return this.position;
+        return this.logicPosition;
+    }
+
+    /**
+     * @return the GUI Position of the cell
+     */
+    public int[] getGuiPosition()
+    {
+        return this.guiPosition;
     }
 
     /**
@@ -140,8 +167,8 @@ public class Cell extends Xform{
      */
     @Override
     public String toString() {
-        String Return = "Cell At["+position[0]+
-                ","+position[1]+","+position[2]+"]: State ="+this.type;
+        String Return = "Cell At["+logicPosition[0]+
+                ","+logicPosition[1]+","+logicPosition[2]+"]: State ="+this.type;
         return Return;
     }
 

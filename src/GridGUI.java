@@ -77,7 +77,7 @@ public class GridGUI {
     {
         for(Cell cell: cells)
         {
-            int[] positions = cell.getPosition();
+            int[] positions = cell.getGuiPosition();
             cell.setTranslate(positions[0],positions[1],positions[2]);
             root.getChildren().add(cell);
         }

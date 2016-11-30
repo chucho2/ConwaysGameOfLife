@@ -82,7 +82,7 @@ public class ConwayAlerts {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeOne){
             gameControler.endCurrentGame();
-            gameControler.newGame(new GameBuilder(3));
+            gameControler.newGame(new GameBuilder());
         } else if (result.get() == buttonTypeTwo) {
             // ... user chose "Two"
         } else if (result.get() == buttonTypeThree) {

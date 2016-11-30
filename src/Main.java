@@ -97,8 +97,7 @@ public class Main extends Application {
         gui.newGrid(gameCreator.getGridSize());
         pane.setCenter(gui.getGrid().getGridGUI());
         gameOfLife = new Logic(gameCreator.getGridSize(),gameCreator.getRValues(),
-                gameCreator.getGrid(),gameCreator.getAliveCells(),
-                gameCreator.getDeadCells(), gameCreator.getBufferCells());
+                gameCreator.getGrid(),gameCreator.getAliveCells());
         gui.getGrid().addCells(gameOfLife.getAliveCells());
         timeline.setCycleCount(Animation.INDEFINITE);
         gui.getConwayBars().updateBoundaryCheckbox(false);

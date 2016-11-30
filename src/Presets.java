@@ -1,4 +1,5 @@
-
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Holds all of the pre-set values of the POC Game of life
@@ -16,7 +17,8 @@ public enum Presets {
     private final int speed;
 
 
-    Presets(int gridSize, int r0, int r1,int r2, int r3, int speed,Cell[][][] test) {
+    Presets(int gridSize, int r0, int r1, int r2,
+            int r3, int speed, ArrayList<Cell> initialAliveCells) {
         this.gridSize = gridSize;
         this.r0 = r0;
         this.r1 = r1;
@@ -35,10 +37,10 @@ public enum Presets {
         return rValues;
     }
 
-    private static Cell[][][] getGridOne(){
-        Cell[][][] Return = new Cell[3][3][3];
+    private static ArrayList<Cell> getGridOne(){
+        ArrayList<Cell> Return = new ArrayList<Cell>();
         int[] position = {0,0,0};
-        Return[1][1][1] = new Cell(position);
+        Return.add(new Cell(position));
         return Return;
     }
 

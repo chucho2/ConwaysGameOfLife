@@ -74,6 +74,7 @@ public class ConwayToolBar {
             }
             throw new UnsupportedOperationException("Not Implemented Yet");
         });
+        Button importGame = new Button("Import");
         Label spacer = new Label("   ");
         TextField speed = new TextField ();
         speed.setMaxSize(50,100);
@@ -109,7 +110,7 @@ public class ConwayToolBar {
 
         ToolBar toolBar = new ToolBar();
 
-        HBox left = new HBox(newGame,newRandom,newPreset);
+        HBox left = new HBox(newGame,newRandom,newPreset,newCustom,importGame);
         HBox center = new HBox(RValues,gridSizeLabel,speed);
         HBox right = new HBox(options,help);
 

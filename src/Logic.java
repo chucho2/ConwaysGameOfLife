@@ -23,29 +23,28 @@ public class Logic {
     //The cells that are ready to be taken out of the GUI.
     private ArrayList<Cell> deadCells;
 
-    //Cells in existance just to help with the edge cases of the game logic.
-    private ArrayList<Cell> bufferCells;
-
     //The Number generator for a random game
     private Random chance = new Random();
 
 
+    {
+        dyingCells = new ArrayList<Cell>();
+        deadCells = new ArrayList<Cell>();
+    }
+
     public Logic(int gridSize, int[] r, Cell[][][] grid)
     {
-        this(gridSize,r,grid,new ArrayList<Cell>(), new ArrayList<Cell>(), new ArrayList<Cell>());
+        this(gridSize,r,grid,new ArrayList<Cell>());
     }
 
 
 
-    public Logic(int gridSize, int[] r, Cell[][][] grid,ArrayList<Cell> aliveCells,
-                 ArrayList<Cell> deadCells, ArrayList<Cell> bufferCells)
+    public Logic(int gridSize, int[] r, Cell[][][] grid,ArrayList<Cell> aliveCells)
     {
          this.gridSize = gridSize;
          this.r = r;
          this.grid = grid;
          this.aliveCells = aliveCells;
-         this.dyingCells = deadCells;
-         this.bufferCells = bufferCells;
     }
 
     /**
@@ -68,11 +67,11 @@ public class Logic {
                 {
                     if(chance.nextInt(100) == 0)
                     {
-                        int[] coords = new int[] {i,j,k};
-                        int[] position = new int[] {-(gridSize/2)+i
+                        int[] logicalPosition = new int[] {i,j,k};
+                        int[] guiPosition = new int[] {-(gridSize/2)+i
                                 ,-(gridSize/2)+j
                                 ,-(gridSize/2)+k};
-                        grid[i][j][k] = new Cell(position);
+                        grid[i][j][k] = new Cell(logicalPosition, guiPosition);
                         grid[i][j][k].setAlive();
                         aliveCells.add(grid[i][j][k]);
                     }
@@ -91,26 +90,14 @@ public class Logic {
         return grid;
     }
 
-    public int getGridSize()
-    {
-        return this.gridSize;
-    }
-
-
-
     public ArrayList<Cell> getAliveCells()
     {
         return aliveCells;
     }
 
-    public ArrayList<Cell> getDyingCells()
-    {
-        return dyingCells;
-    }
-
     public ArrayList<Cell> getDeadCells()
     {
-        return dyingCells;
+        return deadCells;
     }
 
 }
