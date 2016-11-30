@@ -31,6 +31,7 @@ public class ConwayToolBar {
 
     private Label RValues = new Label("");
     private Label gridSizeLabel = new Label("");
+    private Label itterationCounter = new Label("");
 
 
     private Button playAndPause = new Button("Pause ||");
@@ -111,7 +112,7 @@ public class ConwayToolBar {
         ToolBar toolBar = new ToolBar();
 
         HBox left = new HBox(newGame,newRandom,newPreset,newCustom,importGame);
-        HBox center = new HBox(RValues,gridSizeLabel,speed);
+        HBox center = new HBox(RValues,gridSizeLabel,itterationCounter,speed);
         HBox right = new HBox(options,help);
 
         HBox.setHgrow( left, Priority.ALWAYS );
@@ -230,6 +231,11 @@ public class ConwayToolBar {
         return  toolBar;
     }
 
+
+    public void setItteration(int itteration)
+    {
+        itterationCounter.setText("Step: ["+itteration+"]");
+    }
 
     public void updateGridSize(int gridSize)
     {

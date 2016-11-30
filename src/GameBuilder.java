@@ -126,6 +126,25 @@ public class GameBuilder {
                 }
             }
         }
+
+        if(givenAliveCells)
+        {
+            for(Cell cell: aliveCells)
+            {
+                int[] logicalPosition = cell.getLogicPosition();
+                int x = logicalPosition[0];
+                int y = logicalPosition[1];
+                int z = logicalPosition[2];
+
+                //Fancy footwork for making the center of the visible grid
+                // at 0,0 in the Xform axis.
+                int[] guiPosition = new int[] {-(gridSize/2)+x
+                        ,-(gridSize/2)+y
+                        ,-(gridSize/2)+z};
+                grid[x][y][z] = cell;
+                grid[x][y][z].setAlive();
+            }
+        }
     }
 
 

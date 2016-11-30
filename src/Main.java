@@ -24,8 +24,13 @@ public class Main extends Application {
     //the Speed of the game, default is 100%
     private int gameSpeed = 100;
 
+    //How many steps the game has gone through.
+    private int itterationCounter;
+
     //The Top GUI
-    BorderPane pane;
+    private BorderPane pane;
+
+
 
     //this is in charge of updating the main game every "Wall second"
     private Timeline timeline = new Timeline(new KeyFrame(
@@ -63,7 +68,6 @@ public class Main extends Application {
 
         //Starting the game
         newGame();
-        timeline.play();
     }
 
     /**
@@ -74,6 +78,8 @@ public class Main extends Application {
     {
         gui.getGrid().removeCells(gameOfLife.getDeadCells());
         gameOfLife.step();
+        itterationCounter++;
+        gui.getConwayBars().setItteration(itterationCounter);
         gui.getGrid().addCells(gameOfLife.getAliveCells());
     }
 
@@ -94,6 +100,7 @@ public class Main extends Application {
     public void newGame(GameBuilder gameCreator)
     {
         timeline.stop();
+        itterationCounter = 0;
         gui.newGrid(gameCreator.getGridSize());
         pane.setCenter(gui.getGrid().getGridGUI());
         gameOfLife = new Logic(gameCreator.getGridSize(),gameCreator.getRValues(),

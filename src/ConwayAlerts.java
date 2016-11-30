@@ -1,6 +1,7 @@
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -61,7 +62,7 @@ public class ConwayAlerts {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Create a new Preset 3D Logic game");
         alert.setHeaderText("Please choose which Pre-set you would like run.");
-        alert.setContentText("Choose your option.\n"+
+        alert.setContentText("Preset 1 - A good indicator that the basic game works.\n"+
                 "Choose your option.\n"+
                 "Choose your option.\n"+
                 "Choose your option.\n"+
@@ -82,7 +83,14 @@ public class ConwayAlerts {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeOne){
             gameControler.endCurrentGame();
-            gameControler.newGame(new GameBuilder());
+            Presets zero = new Presets(0);
+            ArrayList<Cell> hack = new ArrayList<>();
+            int[] hackHelp = {0,0,0};
+            hack.add(new Cell(hackHelp));
+            gameControler.newGame(new GameBuilder(
+                    zero.getGridSize(),zero.getRValues(),
+                    hack
+            ));
         } else if (result.get() == buttonTypeTwo) {
             // ... user chose "Two"
         } else if (result.get() == buttonTypeThree) {

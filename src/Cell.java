@@ -96,9 +96,9 @@ public class Cell extends Xform{
         grow.setCycleCount(100);
         shrink.setCycleCount(Timeline.INDEFINITE);
 
-        if(logicPosition.length != 3 || guiPosition.length != 3)
+        if(logicPosition.length != 3)
         {
-            String message = "Must give 3 co-ords to Cell Object";
+            String message = "Must give 3 Logic co-ords to Cell Object";
             throw new UnsupportedOperationException(message);
         }
         if(generateGUIComponents)
