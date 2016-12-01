@@ -84,12 +84,9 @@ public class ConwayAlerts {
         if (result.get() == buttonTypeOne){
             gameControler.endCurrentGame();
             Presets zero = new Presets(0);
-            ArrayList<Cell> hack = new ArrayList<>();
-            int[] hackHelp = {0,0,0};
-            hack.add(new Cell(hackHelp));
             gameControler.newGame(new GameBuilder(
                     zero.getGridSize(),zero.getRValues(),
-                    hack
+                    zero.getGetGrid()
             ));
         } else if (result.get() == buttonTypeTwo) {
             // ... user chose "Two"

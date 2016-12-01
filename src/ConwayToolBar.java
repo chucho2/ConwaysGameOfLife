@@ -76,7 +76,6 @@ public class ConwayToolBar {
             throw new UnsupportedOperationException("Not Implemented Yet");
         });
         Button importGame = new Button("Import");
-        Label spacer = new Label("   ");
         TextField speed = new TextField ();
         speed.setMaxSize(50,100);
         speed.clear();
@@ -112,7 +111,7 @@ public class ConwayToolBar {
         ToolBar toolBar = new ToolBar();
 
         HBox left = new HBox(newGame,newRandom,newPreset,newCustom,importGame);
-        HBox center = new HBox(RValues,gridSizeLabel,itterationCounter,speed);
+        HBox center = new HBox(RValues,gridSizeLabel,itterationCounter);
         HBox right = new HBox(options,help);
 
         HBox.setHgrow( left, Priority.ALWAYS );
@@ -181,11 +180,11 @@ public class ConwayToolBar {
         boundary.setOnAction(e->{
             if(boundary.isSelected())
             {
-                topGUI.getGrid().setBoundary(true);
+                topGUI.getGrid().toggleBoundary(true);
             }
             else
             {
-                topGUI.getGrid().setBoundary(false);
+                topGUI.getGrid().toggleBoundary(false);
             }
         });
         CheckBox music = new CheckBox("Music");

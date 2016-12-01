@@ -1,16 +1,15 @@
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.DepthTest;
-import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.SubScene;
+import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.util.Duration;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * creates a SubScene which can hold all of the Box's from within each cell
@@ -54,7 +53,7 @@ public class GridGUI {
         buildCamera();
         buildAxes();
         makeBoundaryBox();
-        scene = new SubScene(root,1024,640);
+        scene = new SubScene(root,1024,640,true, SceneAntialiasing.BALANCED);
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
         rotate.setCycleCount(Animation.INDEFINITE);
@@ -71,6 +70,20 @@ public class GridGUI {
 
     /**
      * adds the given ArrayList of Cells to the scene in the GridGUI object
+     * @param cells the cell to be added to the GridGUI Instance.
+     */
+    public void setBoundary(ArrayList<Cell> cells)
+    {
+        for(Cell cell: cells)
+        {
+            int[] positions = cell.getGuiPosition();
+            cell.setTranslate(positions[0],positions[1],positions[2]);
+            root.getChildren().add(cell);
+        }
+    }
+
+    /**
+     * adds the given ArrayList of Cells to the scene in the GridGUI object
      * @param cells the cell objects to be removed from the GridGUI Instance.
      */
     public void addCells(ArrayList<Cell> cells)
@@ -78,8 +91,10 @@ public class GridGUI {
         for(Cell cell: cells)
         {
             int[] positions = cell.getGuiPosition();
+            System.out.println(Arrays.toString(positions));
+
             cell.setTranslate(positions[0],positions[1],positions[2]);
-            root.getChildren().add(cell);
+            if(!root.getChildren().contains(cell))root.getChildren().add(cell);
         }
     }
 
@@ -100,7 +115,7 @@ public class GridGUI {
      * displays a grey box around the grid, indicating the boundary.
      * @param showing true if the grey box should be showing; else false.
      */
-    public void setBoundary(boolean showing)
+    public void toggleBoundary(boolean showing)
     {
         if(showing)
         {
@@ -173,7 +188,7 @@ public class GridGUI {
    {
        PhongMaterial cellColor = new PhongMaterial();
        cellColor.setDiffuseColor(
-               new Color(0.1,0.1,0.1,1));
+               new Color(0.1,0.1,0.1,0.0001));
        boundary= new Box(gridDimension,gridDimension,gridDimension);
        boundary.setMaterial(cellColor);
        boundary.setTranslateX(0);

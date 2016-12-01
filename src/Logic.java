@@ -52,34 +52,69 @@ public class Logic {
      */
     public void step()
     {
+        Cell tempGrid[][][] = new Cell[gridSize+2][gridSize+2][gridSize+2];
+
         deadCells = dyingCells;
         dyingCells = aliveCells;
         aliveCells = new ArrayList<Cell>();
+
+        for(int i = 1; i < gridSize+1;i++)
+        {
+            for(int j = 1; j< gridSize+1;j++)
+            {
+                for(int k = 1; k < gridSize+1;k++)
+                {
+                    int neighbors = checkForNeighbors(new int[]{i,j,k});
+
+                    //Copying the current state of the grid to the new grid
+                    //in the case that nothing changed.
+                    if(chance.nextInt(100) == 0)
+                    {
+                        //Fancy footwork for making the center of the visible grid
+                        // at 0,0 in the Xform axis.
+                        int[] guiPosition = new int[] {-((gridSize+2)/2)+i
+                                ,-((gridSize+2)/2)+j
+                                ,-((gridSize+2)/2)+k};
+                        grid[i][j][k] = new Cell(new int[]{i,j,k},guiPosition);
+                        grid[i][j][k].setAlive();
+                        aliveCells.add(grid[i][j][k]);
+                        System.out.println("Cells are alive");
+                    }
+
+
+                }
+            }
+        }
         for(Cell cell: dyingCells)
         {
             cell.setDead();
         }
-        for(int i = 0; i < gridSize;i++)
+        grid = tempGrid;
+    }
+
+    private int checkForNeighbors(int[] currentPosition)
+    {
+        int neighbors = -1;
+
+        int x = currentPosition[0];
+        int y = currentPosition[1];
+        int z = currentPosition[2];
+
+        for(int i = -1;i<2;i++)
         {
-            for(int j = 0; j< gridSize;j++)
+            for(int j = -1;j<2;j++)
             {
-                for(int k = 0; k < gridSize;k++)
+                for(int k = -1; k<2;k++)
                 {
-                    if(chance.nextInt(100) == 0)
-                    {
-                        int[] logicalPosition = new int[] {i,j,k};
-                        int[] guiPosition = new int[] {-(gridSize/2)+i
-                                ,-(gridSize/2)+j
-                                ,-(gridSize/2)+k};
-                        grid[i][j][k] = new Cell(logicalPosition, guiPosition);
-                        grid[i][j][k].setAlive();
-                        aliveCells.add(grid[i][j][k]);
-                    }
+                     if(grid[x+i][y+j][z+k] == grid[x][y][z])
+                     {
+                         neighbors++;
+                     }
                 }
             }
         }
-
-
+        System.out.println(neighbors);
+        return neighbors;
     }
 
     /**

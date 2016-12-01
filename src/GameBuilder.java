@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -11,6 +12,9 @@ public class GameBuilder {
     //The cells with their initial state after creation.
     private ArrayList<Cell> aliveCells;
 
+    //The cells being held, so we can display a boarder
+    private ArrayList<Cell> bufferCells;
+
     //The grid with the cells after generation
     private Cell[][][] grid;
 
@@ -18,13 +22,17 @@ public class GameBuilder {
     private Random chance = new Random();
 
     //This is the default value for r, as per the spec.
-    int[] r = {3,3,3,2};
+    int[] r = {2,3,3,3};
+
+    //the cube has a 1 out of initialSpawnChance of spawning in that cell
+    int initialSpawnChance = 100;
 
     //The default dimension for the grid. Sorry, not making this three. Haha.
     private int gridSize;
 
     {
         aliveCells = new ArrayList<Cell>();
+        bufferCells = new ArrayList<Cell>();
     }
 
     /**
@@ -86,42 +94,35 @@ public class GameBuilder {
             givenAliveCells = false;
             aliveCells = new ArrayList<Cell>();
         }
+        this.aliveCells = aliveCells;
 
-        grid = new Cell[gridSize+1][gridSize+1][gridSize+1];
-        for(int x = 0; x < gridSize+1;x++)
+        grid = new Cell[gridSize+2][gridSize+2][gridSize+2];
+
+
+        for(int x = 1; x < gridSize+1;x++)
         {
-            for(int y = 0; y < gridSize+1;y++)
+            for(int y = 1; y < gridSize+1;y++)
             {
-                for(int z = 0; z < gridSize+1;z++)
+                for(int z = 1; z < gridSize+1;z++)
                 {
                     //Telling the Cell where it is in the Game grid for logic
                     int[] logicPosition = new int[] {x,y,z};
+                    System.out.println(Arrays.toString(logicPosition));
 
-                    //Fancy footwork for making the center of the visible grid
-                    // at 0,0 in the Xform axis.
-                    int[] guiPosition = new int[] {-(gridSize/2)+x
-                            ,-(gridSize/2)+y
-                            ,-(gridSize/2)+z};
-
-
-                    //Checking if the Cell is touching any outer wall
-                    boolean isBufferCell = false;
-                    for(int i = 0; i<3;i++)
-                    {
-                        if(logicPosition[i] == 0 || logicPosition[i] == gridSize)
-                        {
-                            //If so, declare it a Buffer Cell.
-                            grid[x][y][z] = new Cell(Cell.CellState.BUFFER, logicPosition,guiPosition);
-                        }
-                    }
 
                     //If we were NOT given the alive cells and the current cell is not a Buffer,
-                    //Give it a shot of being alive.
-                    if(!givenAliveCells && !isBufferCell && chance.nextInt(100) == 0)
+                    //Give it a 1 in initialSpawnChance shot of being alive.
+                    if(!givenAliveCells && chance.nextInt(initialSpawnChance) == 0)
                     {
+                        //Fancy footwork for making the center of the visible grid
+                        // at 0,0 in the Xform axis.
+                        int[] guiPosition = new int[] {-((gridSize+2)/2)+x
+                                ,-((gridSize+2)/2)+y
+                                ,-((gridSize+2)/2)+z};
                         grid[x][y][z] = new Cell(logicPosition,guiPosition);
                         grid[x][y][z].setAlive();
                         aliveCells.add(grid[x][y][z]);
+                        System.out.println("Cells are alive");
                     }
                 }
             }
@@ -132,16 +133,19 @@ public class GameBuilder {
             for(Cell cell: aliveCells)
             {
                 int[] logicalPosition = cell.getLogicPosition();
+
                 int x = logicalPosition[0];
                 int y = logicalPosition[1];
                 int z = logicalPosition[2];
 
                 //Fancy footwork for making the center of the visible grid
                 // at 0,0 in the Xform axis.
-                int[] guiPosition = new int[] {-(gridSize/2)+x
-                        ,-(gridSize/2)+y
-                        ,-(gridSize/2)+z};
+                int[] guiPosition = new int[] {-((gridSize+2)/2)+x
+                        ,-((gridSize+2)/2)+y
+                        ,-((gridSize+2)/2)+z};
+
                 grid[x][y][z] = cell;
+                cell.setGuiPosition(guiPosition);
                 grid[x][y][z].setAlive();
             }
         }
@@ -178,5 +182,13 @@ public class GameBuilder {
     public ArrayList<Cell> getAliveCells()
     {
         return this.aliveCells;
+    }
+
+    /**
+     * @return which cells are buffer cells throughout the game.
+     */
+    public ArrayList<Cell> getBufferCells()
+    {
+        return this.bufferCells;
     }
 }

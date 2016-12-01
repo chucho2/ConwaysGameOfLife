@@ -30,6 +30,8 @@ public class Main extends Application {
     //The Top GUI
     private BorderPane pane;
 
+    Scene scene;
+
 
 
     //this is in charge of updating the main game every "Wall second"
@@ -57,14 +59,11 @@ public class Main extends Application {
         pane.setBottom(gui.getBottomToolBar());
 
         //Wrapping things up and throwing them to the screen.
-        Scene scene = new Scene(pane);
+        scene = new Scene(pane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Conways's 3D Game of Life - Demitri Maestas");//Except for this.
         primaryStage.setResizable(false);
         primaryStage.show();
-
-        //Making keyboard and mouse interactive in game
-        HandleInput keyboard = new HandleInput(scene,gui.getGrid());
 
         //Starting the game
         newGame();
@@ -103,9 +102,11 @@ public class Main extends Application {
         itterationCounter = 0;
         gui.newGrid(gameCreator.getGridSize());
         pane.setCenter(gui.getGrid().getGridGUI());
+        gui.getGrid().setBoundary(gameCreator.getBufferCells());
+        HandleInput keyboard = new HandleInput(scene,gui.getGrid());
         gameOfLife = new Logic(gameCreator.getGridSize(),gameCreator.getRValues(),
                 gameCreator.getGrid(),gameCreator.getAliveCells());
-        gui.getGrid().addCells(gameOfLife.getAliveCells());
+        gui.getGrid().addCells(gameCreator.getAliveCells());
         timeline.setCycleCount(Animation.INDEFINITE);
         gui.getConwayBars().updateBoundaryCheckbox(false);
         gui.getConwayBars().updateRValues(gameCreator.getRValues());

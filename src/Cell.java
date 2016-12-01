@@ -31,6 +31,7 @@ public class Cell extends Xform{
     private Box displayCell;
 
     Color greenColor = new Color(0,1,0,1);
+    Color blueColor = new Color(0,0,1,1);
 
     //In charge of updating the cells animation
     Timeline grow = new Timeline(new KeyFrame(
@@ -93,26 +94,32 @@ public class Cell extends Xform{
      */
     public Cell(CellState type, int[] logicPosition,int[] guiPosition, boolean generateGUIComponents)
     {
-        grow.setCycleCount(100);
-        shrink.setCycleCount(Timeline.INDEFINITE);
-
         if(logicPosition.length != 3)
         {
             String message = "Must give 3 Logic co-ords to Cell Object";
             throw new UnsupportedOperationException(message);
         }
-        if(generateGUIComponents)
-        {
-            if(type != CellState.BUFFER)
-            {
-                cellColor = new PhongMaterial();
-                cellColor.setDiffuseColor(greenColor);
-                displayCell= new Box(0.1,0.1,0.1);
-                this.getChildren().add(displayCell);
-                displayCell.setMaterial(cellColor);
 
-            }
+        grow.setCycleCount(80);
+        shrink.setCycleCount(Timeline.INDEFINITE);
+        cellColor = new PhongMaterial();
+
+        if(type != CellState.BUFFER)
+        {
+            displayCell = new Box(0.1, 0.1, 0.1);
+            cellColor.setDiffuseColor(greenColor);
+            displayCell.setMaterial(cellColor);
         }
+        else
+        {
+            displayCell = new Box(1, 1, 1);
+            cellColor.setDiffuseColor(blueColor);
+            displayCell.setMaterial(cellColor);
+        }
+        this.getChildren().add(displayCell);
+
+
+
         this.type = type;
         this.logicPosition = logicPosition;
         this.guiPosition = guiPosition;
@@ -129,6 +136,17 @@ public class Cell extends Xform{
             grow.play();
             this.type = CellState.ALIVE;
         }
+    }
+
+    /**
+     * sets the Cell Object and its potential JavaFX Box
+     * to "Buffer" for game assistance.
+     */
+    public void setBuffer()
+    {
+            cellColor.setDiffuseColor(new Color(0,0,1,1));
+            this.type = CellState.BUFFER;
+
     }
 
     /**
@@ -153,6 +171,15 @@ public class Cell extends Xform{
     {
         return this.logicPosition;
     }
+
+    /**
+     * @param guiPosition the Position of the Cell in the GUi
+     */
+    public void setGuiPosition(int[] guiPosition)
+    {
+        this.guiPosition = guiPosition;
+    }
+
 
     /**
      * @return the GUI Position of the cell
