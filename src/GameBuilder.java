@@ -21,11 +21,11 @@ public class GameBuilder {
     //The Number generator for a random game
     private Random chance = new Random();
 
-    //This is the default value for r, as per the spec.
-    int[] r = {2,3,3,3};
+    //Good values for a lively 3d game.
+    int[] r = {6,7,10,5};
 
     //the cube has a 1 out of initialSpawnChance of spawning in that cell
-    int initialSpawnChance = 100;
+    int initialSpawnChance = 50;
 
     //The default dimension for the grid. Sorry, not making this three. Haha.
     private int gridSize;
@@ -36,11 +36,12 @@ public class GameBuilder {
     }
 
     /**
-     * Generates a new Conway Game with:
+     * Generates a new Conways 3D game with:
      * - Grid size of 30x30x30
      * - R values of {3,3,3,2}
-     * - A 1 in 100 chance that any given Cell will be
+     * - A 1 in 75 chance that any given Cell will be
      *   set alive at game creation.
+     * -A randomly generated initial grid
      */
     public  GameBuilder()
     {
@@ -48,10 +49,11 @@ public class GameBuilder {
     }
 
     /**
-     * Generates a new Conway Game with:
+     * Generates a new Conways 3D game with:
      * - R values of {3,3,3,2}
-     * - A 1 in 100 chance that any given Cell will be
+     * - A 1 in 75 chance that any given Cell will be
      *   set alive at game creation.
+     * -A randomly generated initial grid
      * @param gridSize the size that each side of the grid will be.
      */
     public GameBuilder(int gridSize)
@@ -60,27 +62,31 @@ public class GameBuilder {
     }
 
     /**
-     * Generates a new Conway Game with:
-     * - A 1 in 100 chance that any given Cell will be
+     * Generates a new Conways 3D game with:
+     * - A 1 in 75 chance that any given Cell will be
      *   set alive at game creation.
+     * -A randomly generated initial grid
      * @param gridSize the size that each side of the grid will be.
      * @param RValues the R Values that the game should be played with.
      */
     public GameBuilder(int gridSize, int[] RValues)
     {
 
-        this(gridSize,RValues,null);
+        this(gridSize,RValues,25);
     }
 
+
     /**
-     * builds a new Conway 3D Game with default r values,
-     * a 30x30 grid, and a one in 100 chance of any given
-     * cell spawning with a live value.
+     * Generates a new Conways 3D game with:
+     * -A randomly generated initial grid
+     * @param gridSize the size that each side of the grid will be.
+     * @param RValues the R Values that the game should be played with.
+     * @param initialSpawnChance an int that determines the 1 out of X
+     *                           chance of any given cell starting
+     *                           alive initially.
      */
-    public GameBuilder(int gridSize, int[] RValues, ArrayList<Cell> aliveCells)
+    public GameBuilder(int gridSize, int[] RValues, int initialSpawnChance)
     {
-        //for some fact checking later on.
-        boolean givenAliveCells = true;
 
         //Should never be null
         this.gridSize = gridSize;
@@ -88,16 +94,9 @@ public class GameBuilder {
         //In case we got an earlier constructor
         if(RValues != null)this.r = RValues;
 
-        //In case we got an earlier constructor
-        if(aliveCells == null)
-        {
-            givenAliveCells = false;
-            aliveCells = new ArrayList<Cell>();
-        }
-        this.aliveCells = aliveCells;
+        aliveCells = new ArrayList<Cell>();
 
         grid = new Cell[gridSize+2][gridSize+2][gridSize+2];
-
 
         for(int x = 1; x < gridSize+1;x++)
         {
@@ -107,12 +106,10 @@ public class GameBuilder {
                 {
                     //Telling the Cell where it is in the Game grid for logic
                     int[] logicPosition = new int[] {x,y,z};
-                    System.out.println(Arrays.toString(logicPosition));
-
 
                     //If we were NOT given the alive cells and the current cell is not a Buffer,
                     //Give it a 1 in initialSpawnChance shot of being alive.
-                    if(!givenAliveCells && chance.nextInt(initialSpawnChance) == 0)
+                    if(chance.nextInt(initialSpawnChance) == 0)
                     {
                         //Fancy footwork for making the center of the visible grid
                         // at 0,0 in the Xform axis.
@@ -122,34 +119,53 @@ public class GameBuilder {
                         grid[x][y][z] = new Cell(logicPosition,guiPosition);
                         grid[x][y][z].setAlive();
                         aliveCells.add(grid[x][y][z]);
-                        System.out.println("Cells are alive");
                     }
                 }
             }
         }
+    }
 
-        if(givenAliveCells)
+
+    /**
+     * Generates a new Conways 3D game with:
+     * @param gridSize the size that each side of the grid will be.
+     * @param RValues the R Values that the game should be played with.
+     * @param aliveCells containes all cells which should be set to alive
+     *                   at initialization.
+     */
+    public GameBuilder(int gridSize, int[] RValues,ArrayList<Cell> aliveCells)
+    {
+
+        //Should never be null
+        this.gridSize = gridSize;
+
+        //In case we got an earlier constructor
+        if(RValues != null)this.r = RValues;
+
+        this.aliveCells = aliveCells;
+
+        grid = new Cell[gridSize+2][gridSize+2][gridSize+2];
+
+
+        for(Cell cell: aliveCells)
         {
-            for(Cell cell: aliveCells)
-            {
-                int[] logicalPosition = cell.getLogicPosition();
+            int[] logicalPosition = cell.getLogicPosition();
 
-                int x = logicalPosition[0];
-                int y = logicalPosition[1];
-                int z = logicalPosition[2];
+            int x = logicalPosition[0];
+            int y = logicalPosition[1];
+            int z = logicalPosition[2];
 
-                //Fancy footwork for making the center of the visible grid
-                // at 0,0 in the Xform axis.
-                int[] guiPosition = new int[] {-((gridSize+2)/2)+x
-                        ,-((gridSize+2)/2)+y
-                        ,-((gridSize+2)/2)+z};
-
-                grid[x][y][z] = cell;
-                cell.setGuiPosition(guiPosition);
-                grid[x][y][z].setAlive();
-            }
+            //Fancy footwork for making the center of the visible grid
+            // at 0,0 in the Xform axis.
+            int[] guiPosition = new int[] {-((gridSize+2)/2)+x
+                    ,-((gridSize+2)/2)+y
+                    ,-((gridSize+2)/2)+z};
+            grid[x][y][z] = cell;
+            cell.setGuiPosition(guiPosition);
+            grid[x][y][z].setAlive();
         }
     }
+
 
 
     /**

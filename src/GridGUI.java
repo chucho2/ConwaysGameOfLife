@@ -91,8 +91,6 @@ public class GridGUI {
         for(Cell cell: cells)
         {
             int[] positions = cell.getGuiPosition();
-            System.out.println(Arrays.toString(positions));
-
             cell.setTranslate(positions[0],positions[1],positions[2]);
             if(!root.getChildren().contains(cell))root.getChildren().add(cell);
         }
@@ -169,6 +167,13 @@ public class GridGUI {
         return this.scene;
     }
 
+    public void showAxis(boolean show)
+    {
+        if(show)axisGroup.setVisible(true);
+        else axisGroup.setVisible(false);
+    }
+
+
 
 
     /**
@@ -219,11 +224,27 @@ public class GridGUI {
     private void buildAxes()
     {
 
-        final Box xAxis = new Box(AXIS_LENGTH, 1, 1);
-        final Box yAxis = new Box(1, AXIS_LENGTH, 1);
-        final Box zAxis = new Box(1, 1, AXIS_LENGTH);
-        axisGroup.getChildren().addAll(xAxis, yAxis, zAxis);
+        final PhongMaterial redMaterial = new PhongMaterial();
+        redMaterial.setDiffuseColor(Color.DARKRED);
+        redMaterial.setSpecularColor(Color.RED);
+
+        final PhongMaterial greenMaterial = new PhongMaterial();
+        greenMaterial.setDiffuseColor(Color.DARKGREEN);
+        greenMaterial.setSpecularColor(Color.GREEN);
+
+        final PhongMaterial blueMaterial = new PhongMaterial();
+        blueMaterial.setDiffuseColor(Color.DARKBLUE);
+        blueMaterial.setSpecularColor(Color.BLUE);
+
+        final Box xAxis = new Box(240.0, 0.5, 0.5);
+        final Box yAxis = new Box(0.5, 240.0, 0.5);
+        final Box zAxis = new Box(0.5, 0.5, 240.0);
+
+        xAxis.setMaterial(redMaterial);
+        yAxis.setMaterial(greenMaterial);
+        zAxis.setMaterial(blueMaterial);
         axisGroup.setVisible(false);
+        axisGroup.getChildren().addAll(xAxis, yAxis, zAxis);
         world.getChildren().addAll(axisGroup);
     }
 }

@@ -22,10 +22,10 @@ public class Presets {
     }
     private void createZero() {
         this.gridSize = 3;
-        this.r0 = 2;
+        this.r0 = 3;
         this.r1 = 3;
         this.r2 = 3;
-        this.r3 = 3;
+        this.r3 = 2;
         this.speed = 100;
         this.getGrid = getGridZero();
     }
@@ -33,9 +33,9 @@ public class Presets {
     private ArrayList<Cell> getGridZero(){
         ArrayList<Cell> Return = new ArrayList<Cell>();
         int[][] startingPos = new int[][]{
-                {1,1,1},{1,1,2},{1,2,1},{1,2,3},{1,3,2},{1,3,3},//Bottom row
+                {1,1,2},{1,2,3},{1,3,2},//Bottom row
                 {2,2,2}, //Center Row
-                {3,1,2},{3,1,3},{3,2,1},{3,2,3},{3,3,1},{3,3,2}};
+                {3,1,2},{3,2,1},{3,3,2}};
         for(int i =0; i<startingPos.length;i++)
         {
                     Return.add(new Cell(startingPos[i]));

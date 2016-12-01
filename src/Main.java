@@ -67,6 +67,7 @@ public class Main extends Application {
 
         //Starting the game
         newGame();
+        play();
     }
 
     /**
@@ -77,6 +78,10 @@ public class Main extends Application {
     {
         gui.getGrid().removeCells(gameOfLife.getDeadCells());
         gameOfLife.step();
+        if(gameOfLife.getAliveCells().size() == 0)
+        {
+            pause();
+        }
         itterationCounter++;
         gui.getConwayBars().setItteration(itterationCounter);
         gui.getGrid().addCells(gameOfLife.getAliveCells());
@@ -111,7 +116,7 @@ public class Main extends Application {
         gui.getConwayBars().updateBoundaryCheckbox(false);
         gui.getConwayBars().updateRValues(gameCreator.getRValues());
         gui.getConwayBars().updateGridSize(gameCreator.getGridSize());
-        timeline.play();
+        pause();
     }
 
     /**
@@ -142,7 +147,8 @@ public class Main extends Application {
 
     public boolean isRunning()
     {
-        if(timeline.getStatus() == Animation.Status.PAUSED)return false;
+        if(timeline.getStatus() == Animation.Status.PAUSED ||
+                timeline.getStatus() == Animation.Status.STOPPED)return false;
         else return true;
     }
 

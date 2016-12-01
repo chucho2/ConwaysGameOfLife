@@ -31,7 +31,7 @@ public class ConwayToolBar {
 
     private Label RValues = new Label("");
     private Label gridSizeLabel = new Label("");
-    private Label itterationCounter = new Label("");
+    private Label itterationCounter = new Label("Step: [0]");
 
 
     private Button playAndPause = new Button("Pause ||");
@@ -73,7 +73,6 @@ public class ConwayToolBar {
             {
                 alerts.newCustomGame();
             }
-            throw new UnsupportedOperationException("Not Implemented Yet");
         });
         Button importGame = new Button("Import");
         TextField speed = new TextField ();
@@ -187,10 +186,13 @@ public class ConwayToolBar {
                 topGUI.getGrid().toggleBoundary(false);
             }
         });
-        CheckBox music = new CheckBox("Music");
-        music.setSelected(true);
-        music.setOnAction(e->{
-            throw new UnsupportedOperationException("Not Implemented Yet");
+        CheckBox showAxis = new CheckBox("Show Axis");
+        showAxis.setOnAction(e->{
+            if(showAxis.isSelected())
+            {
+                topGUI.getGrid().showAxis(true);
+            }
+            else topGUI.getGrid().showAxis(false);
         });
         Button zoomOut = new Button(" - ");
         zoomOut.setOnAction(e->{
@@ -206,7 +208,7 @@ public class ConwayToolBar {
         ToolBar toolBar = new ToolBar();
 
         HBox left = new HBox(playAndPause,
-                forward,rotate,boundary,music);
+                forward,rotate,boundary,showAxis);
         HBox center = new HBox(zoomIn,zoomMessage,zoomOut);
         HBox right = new HBox(exportGame);
 

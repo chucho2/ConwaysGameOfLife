@@ -100,7 +100,7 @@ public class Cell extends Xform{
             throw new UnsupportedOperationException(message);
         }
 
-        grow.setCycleCount(80);
+        grow.setCycleCount(90);
         shrink.setCycleCount(Timeline.INDEFINITE);
         cellColor = new PhongMaterial();
 
@@ -136,17 +136,6 @@ public class Cell extends Xform{
             grow.play();
             this.type = CellState.ALIVE;
         }
-    }
-
-    /**
-     * sets the Cell Object and its potential JavaFX Box
-     * to "Buffer" for game assistance.
-     */
-    public void setBuffer()
-    {
-            cellColor.setDiffuseColor(new Color(0,0,1,1));
-            this.type = CellState.BUFFER;
-
     }
 
     /**

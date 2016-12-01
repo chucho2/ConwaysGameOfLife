@@ -1,6 +1,11 @@
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -97,12 +102,69 @@ public class ConwayAlerts {
         }
     }
 
+
+    //http://stackoverflow.com/questions/31556373/javafx-dialog-with-2-input-fields
     /**
      * Creates a new Preset Game
      */
     public void newCustomGame()
     {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Custom Conway's 3D Game");
 
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField gridDimension = new TextField();
+        TextField spawn = new TextField();
+        TextField R1 = new TextField();
+        TextField R2 = new TextField();
+        TextField R3 = new TextField();
+        TextField R4 = new TextField();
+
+        gridDimension.setPromptText("30");
+        spawn.setPromptText("25");
+        R1.setPromptText("3");
+        R2.setPromptText("3");
+        R3.setPromptText("3");
+        R4.setPromptText("2");
+
+        gridPane.add(new Label("Grid Dimension:"), 0, 0);
+        gridPane.add(new Label("Chance of \ninitial spawn:"), 0, 1);
+        gridPane.add(new Label("out of 100."), 3, 1);
+        gridPane.add(new Label("R1:"), 0, 2);
+        gridPane.add(new Label("R2:"), 0, 3);
+        gridPane.add(new Label("R3:"), 0, 4);
+        gridPane.add(new Label("R4:"), 0, 5);
+        gridPane.add(gridDimension, 1, 0);
+        gridPane.add(spawn, 1, 1);
+        gridPane.add(R1, 1, 2);
+        gridPane.add(R2, 1, 3);
+        gridPane.add(R3, 1, 4);
+        gridPane.add(R4, 1, 5);
+
+        dialog.getDialogPane().setContent(gridPane);
+
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(R1.getText(), R2.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(pair -> {
+            System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
+        });
     }
 
 
