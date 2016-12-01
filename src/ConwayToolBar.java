@@ -32,6 +32,7 @@ public class ConwayToolBar {
     private Label RValues = new Label("");
     private Label gridSizeLabel = new Label("");
     private Label itterationCounter = new Label("Step: [0]");
+    private Label percentGrid = new Label("Grid: 100% (2400/27000)");
 
 
     private Button playAndPause = new Button("Pause ||");
@@ -111,7 +112,7 @@ public class ConwayToolBar {
 
         HBox left = new HBox(newGame,newRandom,newPreset,newCustom,importGame);
         HBox center = new HBox(RValues,gridSizeLabel,itterationCounter);
-        HBox right = new HBox(options,help);
+        HBox right = new HBox(percentGrid);
 
         HBox.setHgrow( left, Priority.ALWAYS );
         HBox.setHgrow( center, Priority.ALWAYS );
@@ -232,6 +233,13 @@ public class ConwayToolBar {
         return  toolBar;
     }
 
+
+    public void setGridPercent(int taken, int free)
+    {
+        int acutalGrid = (free-2)*(free-2)*(free-2);
+        long percent = taken/acutalGrid;
+        percentGrid.setText("Grid: "+percent+"% ("+taken+"/"+acutalGrid+")");
+    }
 
     public void setItteration(int itteration)
     {

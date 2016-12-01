@@ -84,6 +84,8 @@ public class Main extends Application {
         }
         itterationCounter++;
         gui.getConwayBars().setItteration(itterationCounter);
+        gui.getConwayBars().setGridPercent(gameOfLife.getAliveCells().size(),
+                gameOfLife.getGrid().length);
         gui.getGrid().addCells(gameOfLife.getAliveCells());
     }
 

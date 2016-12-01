@@ -100,7 +100,7 @@ public class Cell extends Xform{
             throw new UnsupportedOperationException(message);
         }
 
-        grow.setCycleCount(90);
+        grow.setCycleCount(80);
         shrink.setCycleCount(Timeline.INDEFINITE);
         cellColor = new PhongMaterial();
 
