@@ -101,10 +101,6 @@ public class ConwayToolBar {
         options.setOnAction(e->{
             throw new UnsupportedOperationException("Not Implemented Yet");
         });
-        Button help = new Button("Help");
-        help.setOnAction(e->{
-            alerts.displayHelp();
-        });
 
 
 

@@ -21,7 +21,8 @@ public class ConwayAlerts {
     ConwayGUIBuilder gui;
 
     /**
-     * @param main the main program
+     * @param main the main program, so the alerts can create a new game.
+     * @param gui the main gui, so alerts can update as needed.
      */
     public ConwayAlerts(Main main, ConwayGUIBuilder gui)
     {
@@ -41,11 +42,13 @@ public class ConwayAlerts {
         alert.setTitle("End Current Game?");
         alert.setHeaderText("Are you sure you want to exit" +
                 " this Game?");
-
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK)
+        {
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -67,8 +70,8 @@ public class ConwayAlerts {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Create a new Preset 3D Logic game");
         alert.setHeaderText("Please choose which Pre-set you would like run.");
-        alert.setContentText("Preset 1 - A good indicator that the basic game works.\n"+
-                "Choose your option.\n"+
+        alert.setContentText("L7 - A good indicator that the basic game works.\n"+
+                "The Rubix Cube - Shows the game rules are synchronized everywhere.\n"+
                 "Choose your option.\n"+
                 "Choose your option.\n"+
                 "Choose your option.\n"+
@@ -94,7 +97,12 @@ public class ConwayAlerts {
                     zero.getGetGrid()
             ));
         } else if (result.get() == buttonTypeTwo) {
-            // ... user chose "Two"
+            gameControler.endCurrentGame();
+            Presets zero = new Presets(1);
+            gameControler.newGame(new GameBuilder(
+                    zero.getGridSize(),zero.getRValues(),
+                    zero.getGetGrid()
+            ));
         } else if (result.get() == buttonTypeThree) {
             // ... user chose "Three"
         } else {
@@ -105,7 +113,7 @@ public class ConwayAlerts {
 
     //http://stackoverflow.com/questions/31556373/javafx-dialog-with-2-input-fields
     /**
-     * Creates a new Preset Game
+     * Creates a new Custom game
      */
     public void newCustomGame()
     {
@@ -190,23 +198,5 @@ public class ConwayAlerts {
 
         Optional<String[]> result = dialog.showAndWait();
 
-
     }
-
-
-    public void displayHelp()
-    {
-        gameControler.pause();
-        gui.getGrid().setRotate(false);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Game of Life - Help");
-        alert.setHeaderText("Help Menu:");
-        //TODO put the enitire help menu here
-        alert.setContentText("FIX ME");
-        alert.showAndWait();
-        gui.getGrid().setRotate(true);
-        gameControler.play();
-    }
-
-
 }

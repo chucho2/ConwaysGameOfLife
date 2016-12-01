@@ -189,13 +189,18 @@ public class Cell extends Xform{
     }
 
 
+    /**
+     * called by the timer when we need to update the animation for the cell by just a bit.
+     */
     private void grow()
     {
         displayCell.setDepth(displayCell.getDepth()+.01);
         displayCell.setWidth(displayCell.getWidth()+.01);
         displayCell.setHeight(displayCell.getHeight()+.01);
     }
-
+    /**
+     * called by the timer when we need to update the animation for the cell by just a bit.
+     */
     private void shrink()
     {
         displayCell.setDepth(displayCell.getDepth()-.01);

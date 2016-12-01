@@ -13,14 +13,15 @@ public class ConwayGUIBuilder {
     //the Main method, used to access everything else.
     private Main gameControler;
 
-    //
     private GridGUI gridGUI;
     private ConwayToolBar toolBars;
     private ToolBar topToolbar;
     private ToolBar bottomToolBar;
 
 
-
+    /**
+     * @param main Class so GUI can manipulate game
+     */
     public ConwayGUIBuilder(Main main)
     {
         this.gameControler = main;
@@ -31,26 +32,45 @@ public class ConwayGUIBuilder {
     }
 
 
+    /**
+     * holds the GUI componenets on the top and bottom of the game
+     * @return the ConwayBar holding the components.
+     */
     public ConwayToolBar getConwayBars()
     {
         return this.toolBars;
     }
+
+    /**
+     * creates a new GridGUI, which will host the actual game information.
+     * @param gridSize the size of the grid
+     */
     public void newGrid(int gridSize)
     {
         this.gridGUI = null;
         gridGUI = new GridGUI(gridSize);
     }
+
+    /**
+     * @return the GridGUI
+     */
     public GridGUI getGrid()
     {
         return this.gridGUI;
     }
 
 
+    /**
+     * @return the top conway Toolbar
+     */
     public ToolBar getTopToolBar()
     {
         return this.topToolbar;
     }
 
+    /**
+     * @return the bottom conway toolbar.
+     */
     public ToolBar getBottomToolBar()
     {
         return this.bottomToolBar;
