@@ -109,7 +109,7 @@ public class ConwayAlerts {
      */
     public void newCustomGame()
     {
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("Custom Conway's 3D Game");
 
         // Set the button types.
@@ -155,16 +155,42 @@ public class ConwayAlerts {
         // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == loginButtonType) {
-                return new Pair<>(R1.getText(), R2.getText());
+                try
+                {
+                    int r1 = Integer.parseInt(R1.getText());
+                    int r2 = Integer.parseInt(R2.getText());
+                    int r3 = Integer.parseInt(R3.getText());
+                    int r4 = Integer.parseInt(R4.getText());
+
+                    int grid = Integer.parseInt(gridDimension.getText());
+                    int s = Integer.parseInt(spawn.getText());
+
+                    //Trying to sanitize basic input
+                    if(r2<r1 || r1 == 0 || r2==26)throw new Exception();
+                    if(r3<r4 || r4 == 0 || r3==26)throw new Exception();
+                    if(grid <3 || grid>30)throw new Exception();
+                    if(s<1 || s>99)throw new Exception();
+                gameControler.newGame(new GameBuilder(
+                        grid,
+                        new int[]{r1,r2,r3,r4},
+                       s));
+                } catch (Exception e)
+                {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Invalid Input");
+                    alert.setHeaderText("It looks like your input for a " +
+                            "custom game was invalid.");
+                    alert.showAndWait();
+                }
+
+
             }
             return null;
         });
 
-        Optional<Pair<String, String>> result = dialog.showAndWait();
+        Optional<String[]> result = dialog.showAndWait();
 
-        result.ifPresent(pair -> {
-            System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
-        });
+
     }
 
 

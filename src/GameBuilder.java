@@ -22,10 +22,10 @@ public class GameBuilder {
     private Random chance = new Random();
 
     //Good values for a lively 3d game.
-    int[] r = {6,7,10,5};
+    int[] r = {3,3,3,2};
 
     //the cube has a 1 out of initialSpawnChance of spawning in that cell
-    int initialSpawnChance = 50;
+    int initialSpawnChance = 25;
 
     //The default dimension for the grid. Sorry, not making this three. Haha.
     private int gridSize;

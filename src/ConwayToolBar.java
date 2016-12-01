@@ -209,8 +209,8 @@ public class ConwayToolBar {
 
         HBox left = new HBox(playAndPause,
                 forward,rotate,boundary,showAxis);
-        HBox center = new HBox(zoomIn,zoomMessage,zoomOut);
-        HBox right = new HBox(exportGame);
+        HBox center = new HBox();
+        HBox right = new HBox(zoomIn,zoomMessage,zoomOut);
 
         HBox.setHgrow( left, Priority.ALWAYS );
         HBox.setHgrow( center, Priority.ALWAYS );
