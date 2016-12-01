@@ -104,7 +104,33 @@ public class ConwayAlerts {
                     zero.getGetGrid()
             ));
         } else if (result.get() == buttonTypeThree) {
-            // ... user chose "Three"
+            gameControler.endCurrentGame();
+            Presets zero = new Presets(2);
+            gameControler.newGame(new GameBuilder(
+                    zero.getGridSize(),zero.getRValues(),
+                    zero.getGetGrid()
+            ));
+        } else if (result.get() == buttonTypeFour) {
+            gameControler.endCurrentGame();
+            Presets zero = new Presets(3);
+            gameControler.newGame(new GameBuilder(
+                    zero.getGridSize(),zero.getRValues(),
+                    zero.getGetGrid()
+            ));
+        } else if (result.get() == buttonTypeFive) {
+            gameControler.endCurrentGame();
+            Presets zero = new Presets(4);
+            gameControler.newGame(new GameBuilder(
+                    zero.getGridSize(),zero.getRValues(),
+                    zero.getGetGrid()
+            ));
+        } else if (result.get() == buttonTypeSix) {
+            gameControler.endCurrentGame();
+            Presets zero = new Presets(5);
+            gameControler.newGame(new GameBuilder(
+                    zero.getGridSize(),zero.getRValues(),
+                    zero.getGetGrid()
+            ));
         } else {
             // ... user chose CANCEL or closed the dialog
         }

@@ -52,7 +52,7 @@ public class Logic {
     public void step()
     {
         Cell tempGrid[][][] = new Cell[gridSize+2][gridSize+2][gridSize+2];
-        System.out.println("c:"+aliveCells.size());
+        System.out.println(Arrays.toString(r));
         deadCells = dyingCells;
         dyingCells = new ArrayList<Cell>();
 
@@ -101,27 +101,25 @@ public class Logic {
 
     private int checkForNeighbors(int[] currentPosition)
     {
-        int neighbors = -1;
+        int neighbors = 0;
 
         int x = currentPosition[0];
         int y = currentPosition[1];
         int z = currentPosition[2];
-        //System.out.println("Current Position:"+ Arrays.toString(currentPosition));
-
         for(int i = -1;i<2;i++)
         {
             for(int j = -1;j<2;j++)
             {
                 for(int k = -1; k<2;k++)
                 {
-                     if(grid[x+i][y+j][z+k] != null)
+                    if(!(i == 0 && j == 0 && k==0) && grid[x+i][y+j][z+k] != null)
                      {
                          neighbors++;
                      }
                 }
             }
         }
-       // System.out.println(neighbors);
+
         return neighbors;
     }
 
