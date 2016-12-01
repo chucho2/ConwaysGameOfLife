@@ -22,13 +22,14 @@ public class Presets {
         if(preset == 2)this.createTwo();
         if(preset == 4)this.createFour();
         if(preset == 5)this.createFive();
+        if(preset == 6)this.createSix();
     }
 
 
 
 
     private void createZero() {
-        this.gridSize = 9;
+        this.gridSize = 15;
         this.r0 = 4;
         this.r1 = 4;
         this.r2 = 3;
@@ -40,8 +41,8 @@ public class Presets {
     private ArrayList<Cell> getGridZero(){
         ArrayList<Cell> Return = new ArrayList<Cell>();
         int[][] startingPos = new int[][]{
-                {4,4,4},{4,5,4},{6,4,4},{6,5,4}, //Center Row
-                {4,4,5},{4,5,5},{6,4,5},{6,5,5}};
+                {6,6,6},{6,7,6},{8,6,6},{8,7,6}, //Center Row
+                {6,6,7},{6,7,7},{8,6,7},{8,7,7}};
         for(int i =0; i<startingPos.length;i++)
         {
             Return.add(new Cell(startingPos[i]));
@@ -50,7 +51,7 @@ public class Presets {
     }
 
     private void createOne() {
-        this.gridSize = 9;
+        this.gridSize = 15;
         this.r0 = 4;
         this.r1 = 4;
         this.r2 = 4;
@@ -62,8 +63,8 @@ public class Presets {
     private ArrayList<Cell> getGridOne(){
         ArrayList<Cell> Return = new ArrayList<Cell>();
         int[][] startingPos = new int[][]{
-                {4,4,4},{4,5,4},{6,4,4},{6,5,4}, //Center Row
-                {4,4,5},{4,5,5},{6,4,5},{6,5,5}};
+                {6,6,6},{6,7,6},{8,6,6},{8,7,6}, //Center Row
+                {6,6,7},{6,7,7},{8,6,7},{8,7,7}};
         for(int i =0; i<startingPos.length;i++)
         {
             Return.add(new Cell(startingPos[i]));
@@ -72,7 +73,7 @@ public class Presets {
     }
 
     private void createTwo() {
-        this.gridSize = 9;
+        this.gridSize = 15;
         this.r0 = 4;
         this.r1 = 5;
         this.r2 = 3;
@@ -84,11 +85,36 @@ public class Presets {
     private ArrayList<Cell> getGridTwo(){
         ArrayList<Cell> Return = new ArrayList<Cell>();
         int[][] startingPos = new int[][]{
-                {4,4,4},{4,5,4},{6,4,4},{6,5,4}, //Center Row
-                {4,4,5},{4,5,5},{6,4,5},{6,5,5}};
+                {6,6,6},{6,7,6},{8,6,6},{8,7,6}, //Center Row
+                {6,6,7},{6,7,7},{8,6,7},{8,7,7}};
         for(int i =0; i<startingPos.length;i++)
         {
             Return.add(new Cell(startingPos[i]));
+        }
+        return Return;
+    }
+
+
+
+    private void createFour() {
+        this.gridSize = 9;
+        this.r0 = 3;
+        this.r1 = 3;
+        this.r2 = 3;
+        this.r3 = 2;
+        this.speed = 100;
+        this.getGrid = getGridFour();
+    }
+
+    private ArrayList<Cell> getGridFour(){
+        ArrayList<Cell> Return = new ArrayList<Cell>();
+        int[][] startingPos = new int[][]{
+                {1,1,2},{1,2,3},{1,3,2},//Bottom row
+                {2,2,2}, //Center Row
+                {3,1,2},{3,2,1},{3,3,2}};
+        for(int i =0; i<startingPos.length;i++)
+        {
+                    Return.add(new Cell(startingPos[i]));
         }
         return Return;
     }
@@ -118,25 +144,22 @@ public class Presets {
         return Return;
     }
 
-    private void createFour() {
-        this.gridSize = 3;
-        this.r0 = 3;
-        this.r1 = 3;
-        this.r2 = 3;
+    private void createSix() {
+        this.gridSize = 15;
+        this.r0 = 2;
+        this.r1 = 4;
+        this.r2 = 5;
         this.r3 = 2;
         this.speed = 100;
-        this.getGrid = getGridFour();
+        this.getGrid = getGridSix();
     }
 
-    private ArrayList<Cell> getGridFour(){
+    private ArrayList<Cell> getGridSix(){
         ArrayList<Cell> Return = new ArrayList<Cell>();
-        int[][] startingPos = new int[][]{
-                {1,1,2},{1,2,3},{1,3,2},//Bottom row
-                {2,2,2}, //Center Row
-                {3,1,2},{3,2,1},{3,3,2}};
-        for(int i =0; i<startingPos.length;i++)
+        for(int i =1; i<11;i++)
         {
-                    Return.add(new Cell(startingPos[i]));
+                    Return.add(new Cell(new int[]{i,1,1}));
+
         }
         return Return;
     }

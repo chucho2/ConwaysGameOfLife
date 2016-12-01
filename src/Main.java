@@ -67,7 +67,6 @@ public class Main extends Application {
 
         //Starting the game
         newGame();
-        play();
     }
 
     /**

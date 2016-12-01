@@ -55,25 +55,18 @@ public class ConwayToolBar {
         Label newGame = new Label("New Game:");
         Button newRandom = new Button("Random");
         newRandom.setOnAction(e->{
-            if(alerts.newGameConfirmation())
-            {
-                alerts.newRandomGame();
-            }
-
+            gameControler.pause();
+            alerts.newRandomGame();
         });
         Button newPreset = new Button("Preset");
         newPreset.setOnAction(e->{
-            if(alerts.newGameConfirmation())
-            {
-                alerts.newPresetGame();
-            }
+            gameControler.pause();
+            alerts.newPresetGame();
         });
         Button newCustom = new Button("Custom");
         newCustom.setOnAction(e->{
-            if(alerts.newGameConfirmation())
-            {
-                alerts.newCustomGame();
-            }
+            gameControler.pause();
+            alerts.newCustomGame();
         });
         Button importGame = new Button("Import");
         TextField speed = new TextField ();

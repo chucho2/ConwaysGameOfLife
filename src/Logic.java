@@ -52,7 +52,6 @@ public class Logic {
     public void step()
     {
         Cell tempGrid[][][] = new Cell[gridSize+2][gridSize+2][gridSize+2];
-        System.out.println(Arrays.toString(r));
         deadCells = dyingCells;
         dyingCells = new ArrayList<Cell>();
 
@@ -84,12 +83,11 @@ public class Logic {
 
                     //If the grid has an alive cell and meets the dead params,
                     // kill the cell.
-                    if(grid[i][j][k] != null && (neighbors > 3 || neighbors < r[3]))
+                    if(grid[i][j][k] != null && (neighbors > r[2] || neighbors < r[3]))
                     {
                         grid[i][j][k].setDead();
                         aliveCells.remove(grid[i][j][k]);
                         dyingCells.add(grid[i][j][k]);
-                        //System.out.println("Removing Cell:"+grid[i][j][k]);
                     }
 
 

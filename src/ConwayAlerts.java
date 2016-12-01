@@ -32,28 +32,6 @@ public class ConwayAlerts {
 
 
     /**
-     * Creates a pop-up confirming that the player wants
-     * to leave progress and start a new game.
-     * @return true if player wants new game; else false.
-     */
-    public boolean newGameConfirmation()
-    {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("End Current Game?");
-        alert.setHeaderText("Are you sure you want to exit" +
-                " this Game?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
      * Creates a new random game using main.
      */
     public void newRandomGame()
@@ -70,23 +48,23 @@ public class ConwayAlerts {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Create a new Preset 3D Logic game");
         alert.setHeaderText("Please choose which Pre-set you would like run.");
-        alert.setContentText("L7 - A good indicator that the basic game works.\n"+
-                "The Rubix Cube - Shows the game rules are synchronized everywhere.\n"+
+        alert.setContentText("Preset 1 - Two sets of 2x2 grids, one space apart. R = {4,4,3,4}\n"+
+                "Preset 2 - Two sets of 2x2 grids, one space apart. R = {4,4,4,3}\n"+
+                "Preset 3 - Two sets of 2x2 grids, one space apart. R = {4,5,3,4}.\n"+
                 "Choose your option.\n"+
-                "Choose your option.\n"+
-                "Choose your option.\n"+
-                "Choose your option.\n"+
-                "Choose your option.\n");
+                "L7 - A good indicator that the basic game works.\n"+
+                "The Rubix Cube - Shows the game rules are synchronized everywhere.\n");
 
-        ButtonType buttonTypeOne = new ButtonType("One");
-        ButtonType buttonTypeTwo = new ButtonType("Two");
-        ButtonType buttonTypeThree = new ButtonType("Three");
-        ButtonType buttonTypeFour = new ButtonType("Four");
-        ButtonType buttonTypeFive = new ButtonType("Five");
-        ButtonType buttonTypeSix = new ButtonType("Six");
+        ButtonType buttonTypeOne = new ButtonType("Preset 1");
+        ButtonType buttonTypeTwo = new ButtonType("Preset 2");
+        ButtonType buttonTypeThree = new ButtonType("Preset 3");
+        ButtonType buttonTypeFour = new ButtonType("Preset 4");
+        ButtonType buttonTypeFive = new ButtonType("L7");
+        ButtonType buttonTypeSix = new ButtonType("The Rubix Cube");
+        ButtonType buttonTypeSeven = new ButtonType("The Wall");
 
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree,
-                buttonTypeFour,buttonTypeFive,buttonTypeSix);
+                buttonTypeFour,buttonTypeFive,buttonTypeSix,buttonTypeSeven);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeOne){
@@ -127,6 +105,13 @@ public class ConwayAlerts {
         } else if (result.get() == buttonTypeSix) {
             gameControler.endCurrentGame();
             Presets zero = new Presets(5);
+            gameControler.newGame(new GameBuilder(
+                    zero.getGridSize(),zero.getRValues(),
+                    zero.getGetGrid()
+            ));
+        } else if (result.get() == buttonTypeSeven) {
+            gameControler.endCurrentGame();
+            Presets zero = new Presets(6);
             gameControler.newGame(new GameBuilder(
                     zero.getGridSize(),zero.getRValues(),
                     zero.getGetGrid()
