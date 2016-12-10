@@ -13,7 +13,9 @@ import javafx.util.Duration;
 
 
 /**
- * Created by chucho2 on 11/26/16.
+ * Creates the custom toolbars that the game will
+ * use to change its own properties.
+ * @author Demitri Maestas
  */
 public class ConwayToolBar {
 
@@ -32,7 +34,7 @@ public class ConwayToolBar {
     private Label RValues = new Label("");
     private Label gridSizeLabel = new Label("");
     private Label itterationCounter = new Label("Step: [0]");
-    private Label percentGrid = new Label("Grid: 100% (2400/27000)");
+    private Label percentGrid = new Label("Grid: ");
 
 
     private Button playAndPause = new Button("Pause ||");
@@ -40,6 +42,10 @@ public class ConwayToolBar {
     private CheckBox boundary = new CheckBox("Boundary");
 
 
+    /**
+     * @param main the main game running the program
+     * @param topGUI the top containing GUI.
+     */
     public ConwayToolBar(Main main, ConwayGUIBuilder topGUI)
     {
         this.gameControler = main;
@@ -49,7 +55,9 @@ public class ConwayToolBar {
     }
 
 
-
+    /**
+     * @return the top toolbar
+     */
     protected ToolBar createTopToolBar()
     {
         Label newGame = new Label("New Game:");
@@ -68,7 +76,6 @@ public class ConwayToolBar {
             gameControler.pause();
             alerts.newCustomGame();
         });
-        Button importGame = new Button("Import");
         TextField speed = new TextField ();
         speed.setMaxSize(50,100);
         speed.clear();
@@ -99,7 +106,7 @@ public class ConwayToolBar {
 
         ToolBar toolBar = new ToolBar();
 
-        HBox left = new HBox(newGame,newRandom,newPreset,newCustom,importGame);
+        HBox left = new HBox(newGame,newRandom,newPreset,newCustom);
         HBox center = new HBox(RValues,gridSizeLabel,itterationCounter);
         HBox right = new HBox(percentGrid);
 
@@ -124,6 +131,9 @@ public class ConwayToolBar {
     }
 
 
+    /**
+     * @return the bottom toolbar.
+     */
     protected ToolBar createBottomToolBar()
     {
         Button exportGame = new Button("Export");
@@ -223,24 +233,37 @@ public class ConwayToolBar {
     }
 
 
+    /**
+     * sets the percent filled option in the toolbar
+     * @param taken how many cells are alive
+     * @param free how many cells are not alive
+     */
     public void setGridPercent(int taken, int free)
     {
         int acutalGrid = (free-2)*(free-2)*(free-2);
-        long percent = taken/acutalGrid;
-        percentGrid.setText("Grid: "+percent+"% ("+taken+"/"+acutalGrid+")");
+        percentGrid.setText("Grid: ("+taken+"/"+acutalGrid+")");
     }
 
+    /**
+     * @param itteration the step that the game is currently on.
+     */
     public void setItteration(int itteration)
     {
         itterationCounter.setText("Step: ["+itteration+"]");
     }
 
+    /**
+     * @param gridSize the size of the grid
+     */
     public void updateGridSize(int gridSize)
     {
         gridSizeLabel.setText("Grid-Dimensions [x:"+gridSize+
                 ",y:"+gridSize+",z:"+gridSize+"]   ");
     }
 
+    /**
+     * @param newRValues the R values that the game will be played with.
+     */
     public void updateRValues(int[] newRValues)
     {
          RValues.setText("R-Values["+newRValues[0]+
@@ -264,6 +287,10 @@ public class ConwayToolBar {
         }
     }
 
+    /**
+     * @param on true if the game should show the boundary;
+     *           else false.
+     */
     public void updateBoundaryCheckbox(boolean on)
     {
         if(on)boundary.setSelected(true);

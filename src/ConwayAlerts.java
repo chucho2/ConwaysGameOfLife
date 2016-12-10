@@ -1,12 +1,6 @@
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
-
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -51,7 +45,7 @@ public class ConwayAlerts {
         alert.setContentText("Preset 1 - Two sets of 2x2 grids, one space apart. R = {4,4,3,4}\n"+
                 "Preset 2 - Two sets of 2x2 grids, one space apart. R = {4,4,4,3}\n"+
                 "Preset 3 - Two sets of 2x2 grids, one space apart. R = {4,5,3,4}.\n"+
-                "Choose your option.\n"+
+                "Preset 4 - 2 Adjacent layers, both the same 5 cube pattern.\n"+
                 "L7 - A good indicator that the basic game works.\n"+
                 "The Rubix Cube - Shows the game rules are synchronized everywhere.\n");
 
@@ -60,7 +54,7 @@ public class ConwayAlerts {
         ButtonType buttonTypeThree = new ButtonType("Preset 3");
         ButtonType buttonTypeFour = new ButtonType("Preset 4");
         ButtonType buttonTypeFive = new ButtonType("L7");
-        ButtonType buttonTypeSix = new ButtonType("The Rubix Cube");
+        ButtonType buttonTypeSix = new ButtonType("The Cube");
         ButtonType buttonTypeSeven = new ButtonType("The Wall");
 
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree,

@@ -1,7 +1,4 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * holds all of the game logic for Game of life.
@@ -97,6 +94,12 @@ public class Logic {
         this.grid = tempGrid;
     }
 
+    /**
+     * checks the current position to see if the neighbors of
+     * the position are alive.
+     * @param currentPosition the current position
+     * @return the number of alive neighbors
+     */
     private int checkForNeighbors(int[] currentPosition)
     {
         int neighbors = 0;
@@ -129,11 +132,17 @@ public class Logic {
         return grid;
     }
 
+    /**
+     * @return the alive cells this iteration.
+     */
     public ArrayList<Cell> getAliveCells()
     {
         return aliveCells;
     }
 
+    /**
+     * @return the dead cells this iteration.
+     */
     public ArrayList<Cell> getDeadCells()
     {
         return deadCells;

@@ -15,19 +15,27 @@ public class Presets {
     private ArrayList<Cell> getGrid;
 
 
+    /**
+     *  used to pass the desried pre-set to game of life.
+     * @param preset the preset which the game should load.
+     */
     Presets(int preset)
     {
         if(preset == 0)this.createZero();
         if(preset == 1)this.createOne();
         if(preset == 2)this.createTwo();
+        if(preset == 3)this.createThree();
         if(preset == 4)this.createFour();
         if(preset == 5)this.createFive();
         if(preset == 6)this.createSix();
     }
 
 
-
-
+    /**
+     * In all of the following methods, the createX() method will hold game
+     * conditions and the getGridX() will hold the inital conditions of the
+     * cells to spawn in.
+     */
     private void createZero() {
         this.gridSize = 15;
         this.r0 = 4;
@@ -87,6 +95,28 @@ public class Presets {
         int[][] startingPos = new int[][]{
                 {6,6,6},{6,7,6},{8,6,6},{8,7,6}, //Center Row
                 {6,6,7},{6,7,7},{8,6,7},{8,7,7}};
+        for(int i =0; i<startingPos.length;i++)
+        {
+            Return.add(new Cell(startingPos[i]));
+        }
+        return Return;
+    }
+
+    private void createThree() {
+        this.gridSize = 15;
+        this.r0 = 6;
+        this.r1 = 6;
+        this.r2 = 7;
+        this.r3 = 5;
+        this.speed = 100;
+        this.getGrid = getGridThree();
+    }
+
+    private ArrayList<Cell> getGridThree(){
+        ArrayList<Cell> Return = new ArrayList<Cell>();
+        int[][] startingPos = new int[][]{
+                {6,6,6},{6,7,6},{7,6,6},{5,7,6},{4,6,6},
+                {6,6,7},{6,7,7},{7,6,7},{5,7,7},{4,6,7}};
         for(int i =0; i<startingPos.length;i++)
         {
             Return.add(new Cell(startingPos[i]));
@@ -164,28 +194,30 @@ public class Presets {
         return Return;
     }
 
+    /**
+     * @return the size of the grid.
+     */
     public int getGridSize()
     {
         return gridSize;
     }
 
+    /**
+     * @return the R values of the current game
+     */
     public int[] getRValues()
     {
         int[] RVales = {r0,r1,r2,r3};
         return  RVales;
     }
-    public int getSpeed()
-    {
-        return speed;
-    }
 
+    /**
+     * @return the game grid that was previously generated
+     */
     public ArrayList<Cell> getGetGrid()
     {
         return getGrid;
     }
-
-
-    //Real time updateble R values
 }
 
 

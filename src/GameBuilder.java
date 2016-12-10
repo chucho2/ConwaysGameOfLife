@@ -22,7 +22,7 @@ public class GameBuilder {
     private Random chance = new Random();
 
     //Good values for a lively 3d game.
-    int[] r = {3,3,3,2};
+    int[] r = {4,4,4,3};
 
     //the cube has a 1 out of initialSpawnChance of spawning in that cell
     int initialSpawnChance = 25;
