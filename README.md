@@ -1,21 +1,19 @@
-Logic's Game of Life - Demitri Maestas
+# Conways 3D Game Of Life
 
-This is a game based on the mathematical model constructed by John Horton Logic.
+This is a model ("game") based on the mathematical model constructed by John Horton Conway. In this model exists a 3 dimensional space filled with voxels containing two states, "dead" or "alive", denoted as a "cell". The model then runs (t) amount of time-steps. For every time step, all voxel's will determine their state at time (t+1) as a function of the states of the voxels around them in radus (Rx) at time (t), denoted as "rules". In this 3D Implementation, The user is able to set the rules of the game.
 
-In this 3D Implementation, The user is able to control the Rules of the game.
-The rules per game itteration are as follows:
 
--A cell will first continue the state it is in, Unless:
--A cell will become ALIVE if the number of neighbors is equal or more than R1 and equal or less that R2.
--A cell will DIE if the number of neighbors is more than R3 or less than R4.
+### The rules of the game are bound such that:
 
-Users can zoom in and out with the UP arrow key and DOWN arrow key, or with the
-buttons provided in the interface.
+At time step (t) a cell will not change state unless:
+- If the number of neighbors is >= R1 and <= R2 (ALIVE).
+- If the number of neighbors is >= R3 or  <=R4 (DEAD).
 
-There are interesting presets to enjoy.
+### Game Options:
+- There are interesting presets to enjoy.
+- The Camera is initialized dynamically, placing the initial distance from the camera to the center of the grid relative to the size of the grid.
 
-The Camera is initialized dynamically, placing the initial distance from
-the camera to the center of the grid relative to the size of the grid.
+### Controls:
 
-Bugs:
-Rouge cells will sometimes not die.
+Zoom In/Out:
+```UP arrow key and DOWN arrow key```
